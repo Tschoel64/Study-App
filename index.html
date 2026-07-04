@@ -4,12 +4,10 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>StudyOS</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
-<!-- KaTeX für Formel-Rendering — optional: ohne Internet fällt die App auf Klartext-Formeln zurück -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js" onload="try{if(typeof curView!=='undefined'&&curView==='detail'&&currentNote)document.getElementById('det-md').innerHTML=renderMD(currentNote.content);}catch(e){}"></script>
+<!-- Schriften & KaTeX lokal eingebettet — keine externe Verbindung nötig -->
+<link rel="stylesheet" href="vendor/fonts/fonts.css">
+<link rel="stylesheet" href="vendor/katex/katex.min.css">
+<script defer src="vendor/katex/katex.min.js" onload="try{if(typeof renderSchule==='function')renderSchule();if(typeof curView!=='undefined'&&curView==='detail'&&currentNote)document.getElementById('det-md').innerHTML=renderMD(currentNote.content);}catch(e){}"></script>
 <style>
 /* ══ TOKENS ══════════════════════════════════════════════════════════════ */
 [data-theme="bold-light"]{
@@ -180,7 +178,7 @@ body{
 [data-theme="cyber"] .bn-item:hover,[data-theme="cyber"] .bn-item:active{color:var(--acc);}
 .bn-item.active{color:var(--acc);}
 [data-theme="cyber"] .bn-item.active{text-shadow:0 0 8px var(--acc);}
-.bn-icon{font-size:18px;line-height:1;}
+.bn-icon{font-size:16px;line-height:1;}
 .bn-badge{
   position:absolute;top:6px;right:calc(50% - 18px);
   background:var(--acc);color:var(--acc-fg);
@@ -300,6 +298,13 @@ body{
 [data-theme="cyber"] .fm-box{border:1px solid rgba(0,255,136,.2);border-left:2px solid var(--acc);}
 .fm-lbl{font-size:8px;letter-spacing:.18em;text-transform:uppercase;color:#4a5568;display:block;margin-bottom:7px;}
 .fk{color:#7bc3f5;}.fs{color:#b5d99c;}.fa{color:#f0c27a;}.fd{color:#d59bf5;}
+/* Helles Theme: helle Box mit dunkleren Syntax-Farben statt dunklem Fremdkörper */
+[data-theme="bold-light"] .fm-box{background:var(--muted);border:1px solid var(--bdr);border-left:2px solid var(--acc);color:#52525b;}
+[data-theme="bold-light"] .fm-lbl{color:#a3a3a3;}
+[data-theme="bold-light"] .fk{color:#1d4ed8;}
+[data-theme="bold-light"] .fs{color:#15803d;}
+[data-theme="bold-light"] .fa{color:#b45309;}
+[data-theme="bold-light"] .fd{color:#7e22ce;}
 
 /* ══ NOTIZEN ═════════════════════════════════════════════════════════════ */
 #view-notizen{padding:0;}
@@ -483,6 +488,7 @@ body{
 .fml-e{font-family:var(--fm);font-size:clamp(10px,1.5vw,12.5px);color:var(--ink);background:var(--bg2);border:1px solid var(--bdr);padding:5px 9px;margin-bottom:5px;letter-spacing:.02em;overflow-x:auto;white-space:nowrap;}
 [data-theme="cyber"] .fml-e{color:var(--acc);border-color:rgba(0,255,136,.2);background:rgba(0,255,136,.03);}
 .fml-d{font-size:10.5px;color:var(--ink3);}[data-theme="cyber"] .fml-d{font-family:var(--fm);font-size:10px;}
+.fml-e .katex{font-size:1.05em;}
 .conv-wrap{max-width:400px;}
 .conv-lbl{font-family:var(--fm);font-size:9px;text-transform:uppercase;letter-spacing:.12em;color:var(--ink4);display:block;margin-bottom:4px;}
 [data-theme="cyber"] .conv-lbl{color:var(--acc);opacity:.38;}
@@ -745,6 +751,12 @@ body{
   .fml-grid{grid-template-columns:1fr;}
 }
 
+/* Sehr schmale Handys: 6 Bottom-Nav-Items noch kompakter */
+@media(max-width:370px){
+  .bn-item{font-size:7.5px;letter-spacing:.02em;padding:0 1px;gap:2px;}
+  .bn-icon{font-size:14px;}
+}
+
 @supports(padding:max(0px)){
   #bottomnav{padding-bottom:env(safe-area-inset-bottom);}
 }
@@ -782,6 +794,11 @@ body{
         <button class="tbtn active" data-t="bold-light" onclick="setTheme('bold-light')">Hell</button>
         <button class="tbtn" data-t="bold-dark" onclick="setTheme('bold-dark')">Dunkel</button>
         <button class="tbtn" data-t="cyber" onclick="setTheme('cyber')">Cyber</button>
+      </div>
+      <span class="theme-lbl" style="margin-top:10px">Daten</span>
+      <div class="theme-btns">
+        <button class="tbtn" onclick="exportBackup()" title="Alle Daten als JSON-Datei sichern">↓ Backup</button>
+        <button class="tbtn" onclick="importBackup()" title="Backup-Datei wiederherstellen">↑ Import</button>
       </div>
     </div>
   </aside>
@@ -850,7 +867,6 @@ body{
         </div>
         <div class="det-body">
           <div id="det-hdr" style="margin-bottom:16px;padding-bottom:13px;border-bottom:1px solid var(--bdr)"></div>
-          <div class="fm-box" id="det-fm"></div>
           <div class="md-render" id="det-md"></div>
         </div>
       </div>
@@ -968,6 +984,16 @@ body{
           <!-- ④ Lernfortschritt -->
           <div class="d-card-t" style="margin-bottom:11px">Lernfortschritt</div>
           <div id="mast-list"></div>
+
+          <!-- ⑤ Daten -->
+          <div style="margin-top:26px;padding-top:18px;border-top:1px solid var(--bdr)">
+            <div class="d-card-t" style="margin-bottom:10px">Daten</div>
+            <div style="display:flex;gap:7px;flex-wrap:wrap">
+              <button class="btn btn-o" onclick="exportBackup()">↓ Backup speichern</button>
+              <button class="btn btn-o" onclick="importBackup()">↑ Backup laden</button>
+            </div>
+            <div style="font-family:var(--fm);font-size:9px;color:var(--ink4);margin-top:8px;letter-spacing:.05em">Sichert Notizen, Karten, Prüfungen &amp; Fortschritt als JSON-Datei.</div>
+          </div>
         </div>
       </div>
 
@@ -1089,6 +1115,8 @@ body{
   </div>
 </div>
 
+<input type="file" id="backup-file" accept=".json,application/json" style="display:none">
+
 <!-- MD import drop overlay -->
 <div id="md-drop-overlay">
   <div class="md-drop-box">
@@ -1124,30 +1152,30 @@ const DC=[
 ];
 const FORMULAS={
   Chemie:[
-    {name:"Stoffmenge",expr:"n = m / M",desc:"n [mol], m [g], M [g/mol]"},
-    {name:"pH-Wert",expr:"pH = −log([H₃O⁺])",desc:"Säure-Base"},
-    {name:"Avogadro",expr:"N = n · Nₐ",desc:"Nₐ = 6,022×10²³ mol⁻¹"},
-    {name:"Konzentration",expr:"c = n / V",desc:"c [mol/L]"},
-    {name:"Titration",expr:"c_S·V_S = c_B·V_B",desc:"Neutralisationspunkt"},
-    {name:"Verdünnung",expr:"c₁·V₁ = c₂·V₂",desc:"Verdünnungsregel"},
+    {name:"Stoffmenge",expr:"n = m / M",tex:"n = \\frac{m}{M}",desc:"n [mol], m [g], M [g/mol]"},
+    {name:"pH-Wert",expr:"pH = −log([H₃O⁺])",tex:"\\mathrm{pH} = -\\log\\left(c(\\mathrm{H_3O^+})\\right)",desc:"Säure-Base"},
+    {name:"Avogadro",expr:"N = n · Nₐ",tex:"N = n \\cdot N_A",desc:"Nₐ = 6,022×10²³ mol⁻¹"},
+    {name:"Konzentration",expr:"c = n / V",tex:"c = \\frac{n}{V}",desc:"c [mol/L]"},
+    {name:"Titration",expr:"c_S·V_S = c_B·V_B",tex:"c_S \\cdot V_S = c_B \\cdot V_B",desc:"Neutralisationspunkt"},
+    {name:"Verdünnung",expr:"c₁·V₁ = c₂·V₂",tex:"c_1 \\cdot V_1 = c_2 \\cdot V_2",desc:"Verdünnungsregel"},
   ],
   Physik:[
-    {name:"Kraft",expr:"F = m · a",desc:"F [N], m [kg], a [m/s²]"},
-    {name:"Geschwindigkeit",expr:"v = s / t",desc:"v [m/s]"},
-    {name:"Ohm",expr:"U = R · I",desc:"U [V], R [Ω], I [A]"},
-    {name:"Leistung",expr:"P = U · I",desc:"P [W]"},
-    {name:"E-Kinetisch",expr:"E = ½ · m · v²",desc:"E [J]"},
-    {name:"E-Feldstärke",expr:"E = U / d",desc:"E [V/m]"},
-    {name:"Arbeit",expr:"W = F · s",desc:"W [J]"},
-    {name:"Druck",expr:"p = F / A",desc:"p [Pa]"},
+    {name:"Kraft",expr:"F = m · a",tex:"F = m \\cdot a",desc:"F [N], m [kg], a [m/s²]"},
+    {name:"Geschwindigkeit",expr:"v = s / t",tex:"v = \\frac{s}{t}",desc:"v [m/s]"},
+    {name:"Ohm",expr:"U = R · I",tex:"U = R \\cdot I",desc:"U [V], R [Ω], I [A]"},
+    {name:"Leistung",expr:"P = U · I",tex:"P = U \\cdot I",desc:"P [W]"},
+    {name:"E-Kinetisch",expr:"E = ½ · m · v²",tex:"E_{kin} = \\tfrac{1}{2} m v^2",desc:"E [J]"},
+    {name:"E-Feldstärke",expr:"E = U / d",tex:"E = \\frac{U}{d}",desc:"E [V/m]"},
+    {name:"Arbeit",expr:"W = F · s",tex:"W = F \\cdot s",desc:"W [J]"},
+    {name:"Druck",expr:"p = F / A",tex:"p = \\frac{F}{A}",desc:"p [Pa]"},
   ],
   Mathe:[
-    {name:"abc-Formel",expr:"x = (−b±√(b²−4ac))/2a",desc:"Quadratische Gl."},
-    {name:"Kreisfläche",expr:"A = π · r²",desc:"r = Radius"},
-    {name:"Kreisumfang",expr:"U = 2π · r",desc:"r = Radius"},
-    {name:"Pythagoras",expr:"a² + b² = c²",desc:"Rechtwinkliges Dreieck"},
-    {name:"Kettenregel",expr:"[f(g)]' = f'(g)·g'",desc:"Analysis"},
-    {name:"Produktregel",expr:"(u·v)' = u'v + uv'",desc:"Analysis"},
+    {name:"abc-Formel",expr:"x = (−b±√(b²−4ac))/2a",tex:"x_{1,2} = \\frac{-b \\pm \\sqrt{b^2-4ac}}{2a}",desc:"Quadratische Gl."},
+    {name:"Kreisfläche",expr:"A = π · r²",tex:"A = \\pi r^2",desc:"r = Radius"},
+    {name:"Kreisumfang",expr:"U = 2π · r",tex:"U = 2\\pi r",desc:"r = Radius"},
+    {name:"Pythagoras",expr:"a² + b² = c²",tex:"a^2 + b^2 = c^2",desc:"Rechtwinkliges Dreieck"},
+    {name:"Kettenregel",expr:"[f(g)]' = f'(g)·g'",tex:"\\left[f(g(x))\\right]' = f'(g(x)) \\cdot g'(x)",desc:"Analysis"},
+    {name:"Produktregel",expr:"(u·v)' = u'v + uv'",tex:"(u \\cdot v)' = u'v + uv'",desc:"Analysis"},
   ],
 };
 const CONV={
@@ -1275,13 +1303,18 @@ function renderMD(t){
   s=s.replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>');
   s=s.replace(/\*(.+?)\*/g,'<em>$1</em>');
   s=s.replace(/`([^`]+)`/g,'<code>$1</code>');
-  s=s.replace(/^&gt; ?(.*)$/gm,'<blockquote>$1</blockquote>');
+  // Zusammenhängende > Zeilen zu EINEM Zitat bündeln; leere > Zeilen als Umbruch
+  s=s.replace(/(?:^&gt; ?.*$\n?)+/gm,m=>{
+    const inner=m.replace(/\n$/,'').split('\n').map(l=>l.replace(/^&gt; ?/,'').trim()).filter(Boolean).join('<br>');
+    return`<blockquote>${inner}</blockquote>\n`;
+  });
   s=s.replace(/^\|(.+)\|$/gm,m=>{
     const cols=m.split('|').slice(1,-1).map(c=>c.trim());
     if(cols.every(c=>/^[-: ]+$/.test(c)))return'__S__';
     return'<tr>'+cols.map((c,i)=>i===0?`<th>${c}</th>`:`<td>${c}</td>`).join('')+'</tr>';
   });
-  s=s.replace(/<tr>[\s\S]*?<\/tr>(__S__<tr>[\s\S]*?<\/tr>)?/g,m=>`<table>${m.replace(/__S__/g,'')}</table>`);
+  // Alle aufeinanderfolgenden Tabellenzeilen in EINE <table> zusammenfassen
+  s=s.replace(/(?:<tr>[\s\S]*?<\/tr>|__S__)(?:\n(?:<tr>[\s\S]*?<\/tr>|__S__))*/g,m=>`<table>${m.replace(/__S__/g,'').replace(/\n/g,'')}</table>`);
   s=s.replace(/__S__/g,'');
   s=s.replace(/^- (.+)$/gm,'<li>$1</li>');
   s=s.replace(/^\d+\. (.+)$/gm,'<oli>$1</oli>');
@@ -1562,13 +1595,6 @@ function openNote(id){
   document.querySelectorAll('.nav-item,.bn-item').forEach(n=>n.classList.remove('active'));
   document.getElementById('tb-title').textContent=note.title;
   document.getElementById('det-bc').textContent=`${note.subject} / ${note.title}`;
-  const ta=`[${note.tags.map(t=>`"${t}"`).join(', ')}]`;
-  document.getElementById('det-fm').innerHTML=`<span class="fm-lbl">FRONTMATTER</span>
-<span class="fk">title</span>: <span class="fs">"${note.title}"</span>
-<span class="fk">subject</span>: <span class="fs">"${note.subject}"</span>
-<span class="fk">tags</span>: <span class="fa">${ta}</span>
-<span class="fk">difficulty</span>: <span class="fs">"${note.difficulty}"</span>
-<span class="fk">updated</span>: <span class="fd">"${note.updated}"</span>`;
   document.getElementById('det-hdr').innerHTML=`
     <div style="font-family:var(--fh);font-size:clamp(20px,4vw,30px);font-weight:900;color:var(--ink);letter-spacing:-.03em;line-height:1.1;margin-bottom:10px">${note.title}</div>
     <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center">
@@ -1634,7 +1660,8 @@ function editNote(id){
 }
 function deleteCurrentNote(){
   if(!currentNote)return;
-  if(!confirm(`Notiz "${currentNote.title}" löschen?`))return;
+  const repoHint=currentNote.repoPath?'\n\nHinweis: Diese Notiz liegt im Repo und erscheint beim nächsten Laden der Seite wieder — zum dauerhaften Löschen die Datei aus notes/ und manifest.json entfernen.':'';
+  if(!confirm(`Notiz "${currentNote.title}" löschen?${repoHint}`))return;
   const id=currentNote.id,title=currentNote.title;
   notes=notes.filter(n=>n.id!==id);
   cards=cards.filter(c=>c.noteId!==id);
@@ -1760,8 +1787,9 @@ function renderKarten(){
   const fil=fltC==='Alle'?cards:cards.filter(c=>c.subject===fltC);
   document.getElementById('fc-grid').innerHTML=fil.map(card=>{
     const isDue=new Date(card.nextReview)<=now;const cl=sc(card.subject);
+    const isLeech=(card.lapses||0)>=4;
     return`<div class="fc-card ${isDue?'due':''}">
-      ${isDue?'<span class="fc-due-b">Fällig</span>':''}
+      ${isDue?'<span class="fc-due-b">Fällig</span>':isLeech?'<span class="fc-due-b" style="background:#b45309">⚠ Schwierig</span>':''}
       <div class="fc-subj c${cl}">${card.subject}</div>
       <div class="fc-q">${card.front}</div>
       <div class="fc-m">Interval: ${card.interval} Tag${card.interval!==1?'e':''}</div>
@@ -1808,11 +1836,18 @@ function flipCard(){
   document.getElementById('stu-hint').style.display='none';
   document.getElementById('stu-acts').style.display='grid';
 }
+/* SM-2: q ∈ {1 Falsch, 3 Schwer, 4 Gut, 5 Leicht} */
 function rateCard(q){
   const card={...deck[dIdx]};
-  let interval=card.interval||1;
-  if(q>=3)interval=Math.max(1,Math.round(interval*(q===5?2.5:q===4?2.1:1.4)));else interval=1;
-  cards=cards.map(c=>c.id===card.id?{...c,interval,nextReview:new Date(Date.now()+interval*86400000).toISOString()}:c);
+  let ef=card.ef||2.5, reps=card.reps||0, interval=card.interval||1, lapses=card.lapses||0;
+  if(q<3){
+    reps=0;interval=1;lapses++;
+  } else {
+    ef=Math.max(1.3, ef+(0.1-(5-q)*(0.08+(5-q)*0.02)));
+    reps++;
+    interval=reps===1?1:reps===2?6:Math.round(interval*ef);
+  }
+  cards=cards.map(c=>c.id===card.id?{...c,ef,reps,interval,lapses,nextReview:new Date(Date.now()+interval*86400000).toISOString()}:c);
   sv('sos5-cards',cards);dIdx++;showStudyCard();
 }
 function closeStudy(){
@@ -1841,7 +1876,10 @@ function closeStudy(){
 function buildQuizDeck(){
   const pool=[...cards].sort(()=>Math.random()-.5).slice(0,Math.min(10,cards.length));
   return pool.map(card=>{
-    const wrong=cards.filter(c=>c.id!==card.id).sort(()=>Math.random()-.5).slice(0,3);
+    // Falsche Antworten bevorzugt aus demselben Fach — plausiblere Distraktoren
+    const same=cards.filter(c=>c.id!==card.id&&c.subject===card.subject).sort(()=>Math.random()-.5);
+    const other=cards.filter(c=>c.id!==card.id&&c.subject!==card.subject).sort(()=>Math.random()-.5);
+    const wrong=[...same,...other].slice(0,3);
     const opts=[card.back,...wrong.map(c=>c.back)].sort(()=>Math.random()-.5);
     return{q:card.front,correct:card.back,opts,subject:card.subject};
   });
@@ -1923,7 +1961,7 @@ function renderSchule(){
     const cl=sc(subj);
     h+=`<div style="margin-bottom:22px">
       <div class="subj-hdr c${cl}">${subj}</div>
-      <div class="fml-grid">${fmls.map(f=>`<div class="fml-card bt${cl}"><div class="fml-n">${f.name}</div><div class="fml-e">${f.expr}</div><div class="fml-d">${f.desc}</div></div>`).join('')}</div>
+      <div class="fml-grid">${fmls.map(f=>`<div class="fml-card bt${cl}"><div class="fml-n">${f.name}</div><div class="fml-e">${window.katex&&f.tex?renderMath(f.tex,false):f.expr}</div><div class="fml-d">${f.desc}</div></div>`).join('')}</div>
     </div>`;
   });
   document.getElementById('sch-formeln').innerHTML=h;
@@ -2360,27 +2398,33 @@ function cleanDragOver(){
 /* ════════════════════════════════════════════════════════════════
    MARKDOWN IMPORT (Drag & Drop)
 ════════════════════════════════════════════════════════════════ */
+function parseMdText(text){
+  // Frontmatter (---…---) auslesen; fehlende Felder bleiben leer und werden vom Aufrufer gefüllt
+  let content=text;
+  const meta={title:'',subject:'',tags:[],difficulty:'mittel',updated:''};
+  const fmMatch=text.match(/^---\r?\n([\s\S]+?)\r?\n---\r?\n?([\s\S]*)$/);
+  if(fmMatch){
+    const fm=fmMatch[1];content=(fmMatch[2]||'').trim();
+    const g=re=>{const m=fm.match(re);return m?m[1].trim():'';};
+    meta.title=g(/^title:\s*["']?(.+?)["']?\s*$/m);
+    meta.subject=g(/^subject:\s*["']?(.+?)["']?\s*$/m);
+    meta.difficulty=g(/^difficulty:\s*["']?(.+?)["']?\s*$/m)||'mittel';
+    meta.updated=g(/^updated:\s*["']?(.+?)["']?\s*$/m);
+    const tagsM=fm.match(/^tags:\s*\[([^\]]*)\]/m);
+    if(tagsM)meta.tags=tagsM[1].split(',').map(t=>t.trim().replace(/^["']|["']$/g,'')).filter(Boolean);
+  }
+  return{meta,content};
+}
 function importMdFile(file){
   if(!/\.(md|markdown)$/i.test(file.name)){toast('Nur .md Dateien werden unterstützt','warning');return;}
   const reader=new FileReader();
   reader.onload=function(e){
-    const text=e.target.result;
-    let content=text;
-    let meta={title:file.name.replace(/\.(md|markdown)$/i,''),subject:'Chemie',tags:[],difficulty:'mittel',updated:today(),folderId:null};
-    const fmMatch=text.match(/^---\r?\n([\s\S]+?)\r?\n---\r?\n?([\s\S]*)$/);
-    if(fmMatch){
-      const fm=fmMatch[1];content=(fmMatch[2]||'').trim();
-      const titleM=fm.match(/^title:\s*["']?(.+?)["']?\s*$/m);
-      const subjM=fm.match(/^subject:\s*["']?(.+?)["']?\s*$/m);
-      const diffM=fm.match(/^difficulty:\s*["']?(.+?)["']?\s*$/m);
-      const updM=fm.match(/^updated:\s*["']?(.+?)["']?\s*$/m);
-      const tagsM=fm.match(/^tags:\s*\[([^\]]*)\]/m);
-      if(titleM)meta.title=titleM[1].trim();
-      if(subjM)meta.subject=subjM[1].trim();
-      if(diffM)meta.difficulty=diffM[1].trim();
-      if(updM)meta.updated=updM[1].trim();
-      if(tagsM)meta.tags=tagsM[1].split(',').map(t=>t.trim().replace(/^["']|["']$/g,'')).filter(Boolean);
-    }
+    const parsed=parseMdText(e.target.result);
+    const content=parsed.content;
+    const meta={folderId:null,...parsed.meta};
+    if(!meta.title)meta.title=file.name.replace(/\.(md|markdown)$/i,'');
+    if(!meta.subject)meta.subject='Chemie';
+    if(!meta.updated)meta.updated=today();
     const existing=notes.find(n=>n.title===meta.title&&n.subject===meta.subject);
     if(existing){
       if(!confirm(`"${meta.title}" (${meta.subject}) existiert bereits. Überschreiben?`))return;
@@ -2418,12 +2462,98 @@ document.getElementById('md-drop-overlay').addEventListener('drop',function(e){
 });
 
 /* ════════════════════════════════════════════════════════════════
+   BACKUP & IMPORT (JSON)
+════════════════════════════════════════════════════════════════ */
+function exportBackup(){
+  const data={version:1,exported:new Date().toISOString(),
+    notes,cards,folders,exams,activity,streak,lastStudy};
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(new Blob([JSON.stringify(data,null,2)],{type:'application/json'}));
+  a.download=`studyos-backup-${today()}.json`;
+  a.click();
+  toast('💾 Backup heruntergeladen','success');
+}
+function importBackup(){document.getElementById('backup-file').click();}
+function handleBackupFile(file){
+  const reader=new FileReader();
+  reader.onload=function(e){
+    let d;
+    try{d=JSON.parse(e.target.result);}catch{toast('Ungültige Backup-Datei','warning');return;}
+    if(!d||!Array.isArray(d.notes)||!Array.isArray(d.cards)){toast('Ungültige Backup-Datei','warning');return;}
+    const when=d.exported?new Date(d.exported).toLocaleDateString('de-DE'):'unbekannt';
+    if(!confirm(`Backup vom ${when} laden?\n${d.notes.length} Notizen, ${d.cards.length} Karten — ersetzt die aktuellen Daten.`))return;
+    notes=d.notes;cards=d.cards;
+    folders=Array.isArray(d.folders)?d.folders:[];
+    exams=Array.isArray(d.exams)?d.exams:[];
+    activity=d.activity&&typeof d.activity==='object'?d.activity:{};
+    streak=typeof d.streak==='number'?d.streak:0;
+    lastStudy=d.lastStudy||'';
+    sv('sos5-notes',notes);sv('sos5-cards',cards);sv('sos5-folders',folders);
+    sv('sos5-exams',exams);sv('sos5-act',activity);sv('sos5-streak',streak);sv('sos5-lastStudy',lastStudy);
+    renderSidebar();showView('dashboard');
+    toast('✓ Backup wiederhergestellt','success');
+  };
+  reader.readAsText(file);
+}
+
+/* ════════════════════════════════════════════════════════════════
+   REPO-SYNC — gleicht notes/ vom Server (z.B. GitHub Pages) ab.
+   Repo ist Quelle: lokal gelöschte Notizen erscheinen wieder,
+   neuere Repo-Versionen (updated-Datum) überschreiben lokale.
+════════════════════════════════════════════════════════════════ */
+function repoPathId(p){let h=0;for(let i=0;i<p.length;i++){h=(h*31+p.charCodeAt(i))>>>0;}return'r'+h.toString(36);}
+async function syncRepoNotes(){
+  if(location.protocol==='file:')return; // ohne Server kein Abgleich
+  let files;
+  try{
+    const res=await fetch('notes/manifest.json',{cache:'no-store'});
+    if(!res.ok)return;
+    const man=await res.json();
+    files=Array.isArray(man)?man:(man.files||[]);
+  }catch{return;} // offline o.ä. — App läuft normal weiter
+  if(!files.length)return;
+  let added=0,updated=0;
+  await Promise.all(files.map(async path=>{
+    try{
+      const r=await fetch('notes/'+encodeURI(path),{cache:'no-store'});
+      if(!r.ok)return;
+      const parsed=parseMdText(await r.text());
+      const meta=parsed.meta;
+      if(!meta.title)meta.title=path.split('/').pop().replace(/\.(md|markdown)$/i,'');
+      if(!meta.subject)meta.subject=path.includes('/')?path.split('/')[0]:'Chemie';
+      const ex=notes.find(n=>n.repoPath===path)
+        ||notes.find(n=>!n.repoPath&&n.title===meta.title&&n.subject===meta.subject);
+      if(!ex){
+        notes.push({id:repoPathId(path),repoPath:path,folderId:null,...meta,content:parsed.content});
+        added++;
+      } else {
+        ex.repoPath=path;
+        if(meta.updated&&meta.updated>(ex.updated||'')){
+          Object.assign(ex,meta,{content:parsed.content});
+          updated++;
+        }
+      }
+    }catch{}
+  }));
+  if(added||updated){
+    sv('sos5-notes',notes);
+    renderSidebar();
+    if(['dashboard','notizen','struktur','suche'].includes(curView))showView(curView);
+    toast(`⟳ Mit Repo abgeglichen: ${added} neu, ${updated} aktualisiert`,'success');
+  }
+}
+
+/* ════════════════════════════════════════════════════════════════
    NAV EVENTS
 ════════════════════════════════════════════════════════════════ */
 document.querySelectorAll('.nav-item[data-view],.bn-item[data-view]').forEach(btn=>{
   btn.addEventListener('click',()=>showView(btn.dataset.view));
 });
 document.getElementById('search-input').addEventListener('input',doSearch);
+document.getElementById('backup-file').addEventListener('change',function(){
+  if(this.files.length)handleBackupFile(this.files[0]);
+  this.value='';
+});
 document.getElementById('editor-ta').addEventListener('input',function(){
   document.getElementById('ed-prev').innerHTML=renderMD(this.value);
 });
@@ -2460,6 +2590,7 @@ renderSidebar();
 renderDash();
 renderSchule();
 setupConv();
+syncRepoNotes();
 </script>
 </body>
 </html>
