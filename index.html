@@ -3,7 +3,18 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>StudyOS</title>
+<title>FakeStuff</title>
+<!-- App-Icon: wird u.a. verwendet, wenn die Seite auf iOS/iPadOS zum Home-Bildschirm hinzugefügt wird -->
+<link rel="icon" href="icons/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="icons/icon-32.png">
+<link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon-180.png">
+<link rel="apple-touch-icon" sizes="180x180" href="icons/apple-touch-icon-180.png">
+<link rel="apple-touch-icon" sizes="167x167" href="icons/apple-touch-icon-167.png">
+<link rel="apple-touch-icon" sizes="152x152" href="icons/apple-touch-icon-152.png">
+<link rel="apple-touch-icon" sizes="120x120" href="icons/apple-touch-icon-120.png">
+<meta name="apple-mobile-web-app-title" content="FakeStuff">
+<meta name="theme-color" content="#FF3D00">
 <!-- Schriften & KaTeX lokal eingebettet — keine externe Verbindung nötig -->
 <link rel="stylesheet" href="vendor/fonts/fonts.css">
 <link rel="stylesheet" href="vendor/katex/katex.min.css">
@@ -393,80 +404,6 @@ body{
 [data-theme="cyber"] .sr-sn mark{background:rgba(0,255,136,.18);color:var(--acc);}
 .sr-meta{display:flex;gap:6px;margin-top:8px;align-items:center;flex-wrap:wrap;}
 
-/* ══ KARTEIKARTEN ════════════════════════════════════════════════════════ */
-#view-karten{padding:0;}
-.k-body{padding:clamp(14px,2.5vw,24px) clamp(14px,3vw,36px) 36px;}
-.fc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,210px),1fr));gap:1px;background:var(--bdr);margin-top:14px;}
-[data-theme="cyber"] .fc-grid{background:rgba(0,255,136,.07);}
-.fc-card{background:var(--sur);padding:clamp(12px,2vw,18px);position:relative;}
-.fc-card.due{background:var(--muted);}
-[data-theme="cyber"] .fc-card.due{background:rgba(255,136,0,.04);border-top:1px solid #ff8800;}
-.fc-due-b{position:absolute;top:0;right:0;background:var(--acc);color:var(--acc-fg);font-family:var(--fm);font-size:8px;font-weight:700;padding:2px 7px;text-transform:uppercase;}
-[data-theme="cyber"] .fc-due-b{background:#ff8800;box-shadow:0 0 5px rgba(255,136,0,.4);}
-.fc-subj{font-family:var(--fm);font-size:8.5px;text-transform:uppercase;letter-spacing:.16em;margin-bottom:6px;}
-.fc-q{font-size:12px;font-weight:600;color:var(--ink);line-height:1.5;margin-bottom:6px;}
-[data-theme="cyber"] .fc-q{font-family:var(--fm);font-size:11px;text-transform:uppercase;}
-.fc-m{font-family:var(--fm);font-size:9.5px;color:var(--ink4);}
-
-/* Study fullscreen */
-#stu-ov{display:none;position:fixed;inset:0;z-index:500;background:var(--bg);flex-direction:column;align-items:center;justify-content:center;padding:clamp(14px,3vw,28px);}
-#stu-ov.on{display:flex;}
-.stu-x{position:absolute;top:16px;left:16px;font-family:var(--fm);font-size:10px;color:var(--ink3);background:none;border:none;cursor:pointer;letter-spacing:.08em;text-transform:uppercase;padding:8px 10px;transition:color var(--tr);min-height:44px;}
-.stu-x:hover{color:var(--acc);}
-.stu-ct{font-family:var(--fm);font-size:10px;color:var(--ink4);letter-spacing:.1em;margin-bottom:13px;width:100%;max-width:520px;text-align:center;}
-[data-theme="cyber"] .stu-ct{color:var(--acc);opacity:.4;}
-.stu-pt{width:100%;max-width:520px;height:2px;background:var(--bdr);margin-bottom:22px;}
-.stu-pf{height:100%;background:var(--acc);transition:width .35s cubic-bezier(.25,0,0,1);}
-[data-theme="cyber"] .stu-pf{box-shadow:0 0 8px var(--acc);}
-.stu-card{width:100%;max-width:520px;background:var(--sur);border:1px solid var(--bdr);padding:clamp(24px,4vw,44px) clamp(18px,3.5vw,40px);cursor:pointer;text-align:center;transition:border-color var(--tr);position:relative;min-height:180px;display:flex;flex-direction:column;align-items:center;justify-content:center;}
-.stu-card:hover{border-color:var(--bdr2);}
-[data-theme="cyber"] .stu-card:hover{border-color:var(--acc);box-shadow:0 0 24px rgba(0,255,136,.08);}
-.stu-stag{position:absolute;top:12px;right:14px;font-family:var(--fm);font-size:7.5px;text-transform:uppercase;letter-spacing:.18em;color:var(--ink4);}
-[data-theme="cyber"] .stu-stag{color:var(--acc);opacity:.3;}
-.stu-txt{font-family:var(--fh);font-size:clamp(13px,2.5vw,17px);font-weight:600;color:var(--ink);line-height:1.5;letter-spacing:-.02em;white-space:pre-wrap;max-width:440px;}
-[data-theme="cyber"] .stu-txt{font-family:var(--fm);font-size:clamp(11px,2vw,14px);letter-spacing:.02em;font-weight:400;}
-.stu-hint{font-family:var(--fm);font-size:9px;color:var(--ink4);letter-spacing:.1em;text-transform:uppercase;margin-top:14px;}
-[data-theme="cyber"] .stu-hint{color:rgba(0,255,136,.2);}
-.stu-acts{display:grid;grid-template-columns:repeat(4,1fr);gap:5px;margin-top:11px;width:100%;max-width:520px;}
-.rbn{padding:11px 4px;border:1px solid;background:none;font-family:var(--fm);font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;cursor:pointer;transition:all var(--tr);min-height:44px;}
-.rw{border-color:#DC2626;color:#DC2626;}.rw:hover{background:rgba(220,38,38,.07);}
-.rh{border-color:#D97706;color:#D97706;}.rh:hover{background:rgba(217,119,6,.07);}
-.rg{border-color:#2563EB;color:#2563EB;}.rg:hover{background:rgba(37,99,235,.07);}
-.re{border-color:#16A34A;color:#16A34A;}.re:hover{background:rgba(22,163,74,.07);}
-[data-theme="cyber"] .rw{border-color:#ff3366;color:#ff3366;}
-[data-theme="cyber"] .rh{border-color:#ff8800;color:#ff8800;}
-[data-theme="cyber"] .rg{border-color:#00d4ff;color:#00d4ff;}
-[data-theme="cyber"] .re{border-color:var(--acc);color:var(--acc);}
-
-/* ══ QUIZ fullscreen ═════════════════════════════════════════════════════ */
-#quiz-ov{display:none;position:fixed;inset:0;z-index:500;background:var(--bg);flex-direction:column;align-items:center;justify-content:center;padding:clamp(14px,3vw,24px);}
-#quiz-ov.on{display:flex;}
-.qx-btn{position:absolute;top:16px;left:16px;font-family:var(--fm);font-size:10px;color:var(--ink3);background:none;border:none;cursor:pointer;letter-spacing:.08em;text-transform:uppercase;padding:8px 10px;transition:color var(--tr);min-height:44px;}
-.qx-btn:hover{color:var(--acc);}
-.q-meta{display:flex;justify-content:space-between;font-family:var(--fm);font-size:9.5px;color:var(--ink4);letter-spacing:.08em;margin-bottom:4px;width:100%;max-width:540px;}
-[data-theme="cyber"] .q-meta{color:rgba(0,255,136,.35);}
-.q-pt{width:100%;max-width:540px;height:2px;background:var(--bdr);margin-bottom:18px;}
-.q-pf{height:100%;background:var(--acc);transition:width .35s cubic-bezier(.25,0,0,1);}
-[data-theme="cyber"] .q-pf{box-shadow:0 0 6px var(--acc);}
-.q-card{width:100%;max-width:540px;background:var(--sur);border:1px solid var(--bdr);padding:clamp(20px,3.5vw,32px);text-align:center;margin-bottom:13px;}
-.q-subj{font-family:var(--fm);font-size:9px;text-transform:uppercase;letter-spacing:.13em;color:var(--ink4);margin-bottom:7px;}
-.q-q{font-family:var(--fh);font-size:clamp(13px,2vw,18px);font-weight:700;color:var(--ink);line-height:1.4;}
-[data-theme="cyber"] .q-q{font-family:var(--fm);text-transform:uppercase;letter-spacing:.02em;}
-.q-opts{display:grid;grid-template-columns:1fr 1fr;gap:7px;width:100%;max-width:540px;}
-.q-opt{padding:12px 14px;background:var(--sur);border:1px solid var(--bdr);cursor:pointer;font-family:var(--fb);font-size:12.5px;color:var(--ink2);text-align:left;transition:all var(--tr);min-height:48px;display:flex;align-items:center;gap:8px;}
-.q-opt:hover{border-color:var(--bdr2);background:var(--muted);}
-[data-theme="cyber"] .q-opt{font-family:var(--fm);font-size:11px;}
-[data-theme="cyber"] .q-opt:hover{border-color:var(--acc);}
-.q-opt.correct{background:#f0fdf4;border-color:#16a34a;color:#15803d;}
-.q-opt.wrong{background:#fef2f2;border-color:#dc2626;color:#b91c1c;}
-[data-theme="bold-dark"] .q-opt.correct{background:rgba(52,211,153,.1);border-color:#34d399;color:#34d399;}
-[data-theme="bold-dark"] .q-opt.wrong{background:rgba(248,113,113,.1);border-color:#f87171;color:#f87171;}
-[data-theme="cyber"] .q-opt.correct{background:rgba(0,255,136,.1);border-color:var(--acc);color:var(--acc);}
-[data-theme="cyber"] .q-opt.wrong{background:rgba(255,51,102,.1);border-color:#ff3366;color:#ff3366;}
-.q-letter{width:20px;height:20px;background:var(--bg2);border:1px solid var(--bdr);display:flex;align-items:center;justify-content:center;font-family:var(--fm);font-size:8.5px;font-weight:700;flex-shrink:0;}
-.q-explain{margin-top:10px;padding:12px 15px;background:var(--muted);border:1px solid var(--bdr);font-size:12.5px;color:var(--ink2);line-height:1.6;width:100%;max-width:540px;display:none;}
-[data-theme="cyber"] .q-explain{font-family:var(--fm);font-size:11px;}
-
 /* ══ SCHULMODUS ══════════════════════════════════════════════════════════ */
 #view-schule{padding:0;}
 .sch-body{padding:clamp(14px,2.5vw,24px) clamp(14px,3vw,36px) 40px;}
@@ -698,8 +635,6 @@ body{
   .d-card:last-child{border-bottom:none;}
   .ed-panels{grid-template-columns:1fr;}
   .ed-right{display:none;}
-  .q-opts{grid-template-columns:1fr;}
-  .stu-acts{grid-template-columns:repeat(2,1fr);}
 }
 
 /* ══ MOBILE: show bottom nav, hide desktop sidebar ════════════════════════ */
@@ -713,7 +648,7 @@ body{
   /* Topbar on mobile */
   #topbar{padding:0 12px;gap:6px;}
   .btn.tb-theme{display:inline-flex;}
-  /* 6 Items in der Bottom-Nav — etwas kompakter */
+  /* Items in der Bottom-Nav — etwas kompakter */
   .bn-item{font-size:8.5px;padding:0 2px;}
   /* Compact stats */
   .stats-row{grid-template-columns:repeat(2,1fr);}
@@ -730,8 +665,6 @@ body{
   .str-ct{padding:14px;}
   /* Grids single column */
   .notes-grid{grid-template-columns:1fr;}
-  .q-opts{grid-template-columns:1fr;}
-  .stu-acts{grid-template-columns:repeat(2,1fr);}
   .fml-grid{grid-template-columns:repeat(2,1fr);}
   /* Filter strip scrollable */
   .flt-strip{width:100%;display:flex;flex-wrap:nowrap;overflow-x:auto;border-right:none;border-left:none;border-top:none;}
@@ -747,7 +680,6 @@ body{
 }
 
 @media(max-width:400px){
-  .fc-grid{grid-template-columns:1fr;}
   .fml-grid{grid-template-columns:1fr;}
 }
 
@@ -770,22 +702,20 @@ body{
   <aside id="sidebar">
     <div class="s-logo">
       <div style="display:flex;align-items:baseline;">
-        <span class="logo-s">S</span><span class="logo-r">tudy<span style="opacity:.4">OS</span></span>
+        <span class="logo-s">F</span><span class="logo-r">ake<span style="opacity:.4">Stuff</span></span>
       </div>
       <div class="logo-tag">Wissensbasis</div>
       <div class="streak-chip" id="streak-chip">🔥 <span id="streak-num">0</span> Tage</div>
     </div>
     <nav class="s-nav">
-      <div class="nav-lbl">Wissen</div>
+      <div class="nav-lbl">Übersicht</div>
       <button class="nav-item active" data-view="dashboard"><span class="nav-ico">◈</span>Dashboard</button>
-      <button class="nav-item" data-view="struktur"><span class="nav-ico">❖</span>Themenbaum</button>
-      <button class="nav-item" data-view="notizen"><span class="nav-ico">▣</span>Notizen</button>
-      <button class="nav-item" data-view="suche"><span class="nav-ico">○</span>Suche</button>
-      <div class="nav-lbl" style="margin-top:4px">Lernen</div>
-      <button class="nav-item" data-view="karten" id="nav-karten"><span class="nav-ico">◇</span>Karteikarten</button>
-      <button class="nav-item" data-view="schule"><span class="nav-ico">△</span>Schulmodus</button>
+      <button class="nav-item" data-view="struktur"><span class="nav-ico">❖</span>Files</button>
       <button class="nav-item" data-view="stats"><span class="nav-ico">◎</span>Fortschritt</button>
-      <button class="nav-item" data-view="editor"><span class="nav-ico">＋</span>Neue Notiz</button>
+      <div class="nav-lbl" style="margin-top:4px">Wissen</div>
+      <button class="nav-item" data-view="notizen"><span class="nav-ico">▣</span>Lernzettel</button>
+      <button class="nav-item" data-view="schule"><span class="nav-ico">△</span>Schulmodus</button>
+      <button class="nav-item" data-view="suche"><span class="nav-ico">○</span>Suche</button>
     </nav>
     <div class="s-subj" id="s-subj"></div>
     <div class="theme-wrap">
@@ -817,7 +747,7 @@ body{
       <!-- DASHBOARD -->
       <div class="view active" id="view-dashboard">
         <div class="d-hero">
-          <div class="d-bg">OS</div>
+          <div class="d-bg">FS</div>
           <div class="d-inner">
             <div class="d-greet" id="d-greet">Guten Morgen</div>
             <div class="d-title">Lerne.<br>Verstehe.<br>Behalte.</div>
@@ -848,8 +778,11 @@ body{
       <!-- NOTIZEN -->
       <div class="view" id="view-notizen">
         <div class="ph" style="display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:10px">
-          <div><span class="acc-line"></span><div class="ph-title">Notizen</div><div class="ph-sub">Alle Markdown-Dateien deiner Wissensbasis</div></div>
-          <button class="btn btn-o" onclick="downloadAllNotes()" style="margin-top:auto;flex-shrink:0">↓ Alle herunterladen</button>
+          <div><span class="acc-line"></span><div class="ph-title">Lernzettel</div><div class="ph-sub">Alle Markdown-Dateien deiner Wissensbasis</div></div>
+          <div style="display:flex;gap:7px;margin-top:auto;flex-shrink:0;flex-wrap:wrap">
+            <button class="btn btn-p" onclick="showView('editor')">+ Neuer Lernzettel</button>
+            <button class="btn btn-o" onclick="downloadAllNotes()">↓ Alle herunterladen</button>
+          </div>
         </div>
         <div class="n-body"><div class="flt-strip" id="n-flt"></div><div class="notes-grid" id="notes-grid"></div></div>
       </div>
@@ -861,7 +794,6 @@ body{
           <span class="breadc" id="det-bc"></span>
           <span class="spacer"></span>
           <button class="btn btn-o" style="font-size:10px;padding:5px 11px" onclick="editCurrentNote()">✎ Bearbeiten</button>
-          <button class="btn btn-o" style="font-size:10px;padding:5px 11px" onclick="addCardFromNote()">+ Karte</button>
           <button class="btn btn-o" style="font-size:10px;padding:5px 11px" onclick="exportNote()">↓ Export</button>
           <button class="btn btn-o" style="font-size:10px;padding:5px 11px;color:#dc2626;border-color:#dc2626" onclick="deleteCurrentNote()">✕</button>
         </div>
@@ -880,20 +812,6 @@ body{
           <div class="r-cnt" id="r-cnt"></div>
           <div id="s-res"></div>
         </div>
-      </div>
-
-      <!-- KARTEIKARTEN -->
-      <div class="view" id="view-karten">
-        <div class="ph">
-          <span class="acc-line"></span><div class="ph-title">Karteikarten</div>
-          <div class="ph-sub" style="display:flex;gap:7px;margin-top:11px;flex-wrap:wrap;align-items:center">
-            <button class="btn btn-o" id="btn-due" onclick="startStudy(true)" style="display:none"></button>
-            <button class="btn btn-p" onclick="startStudy(false)">Lernen →</button>
-            <button class="btn btn-o" onclick="startQuiz()">Quiz</button>
-            <button class="btn btn-o" onclick="showAddCard(null,null)">+ Neue Karte</button>
-          </div>
-        </div>
-        <div class="k-body"><div class="flt-strip" id="k-flt"></div><div class="fc-grid" id="fc-grid"></div></div>
       </div>
 
       <!-- SCHULMODUS -->
@@ -969,7 +887,7 @@ body{
               <div class="d-card-t" style="margin-bottom:0">Klausurplan</div>
               <div style="display:flex;gap:7px;flex-wrap:wrap">
                 <button class="btn btn-o" onclick="showAddExam()" style="font-size:10px;padding:4px 11px">+ Prüfung</button>
-                <button class="btn btn-o" onclick="syncKlausurNote()" style="font-size:10px;padding:4px 11px" title="Als Notiz im Themenbaum speichern">↓ Als Notiz</button>
+                <button class="btn btn-o" onclick="syncKlausurNote()" style="font-size:10px;padding:4px 11px" title="Als Lernzettel in Files speichern">↓ Als Lernzettel</button>
               </div>
             </div>
             <div id="kp-list"></div>
@@ -981,18 +899,14 @@ body{
           <!-- ③ Kennzahlen -->
           <div class="big-stats" id="big-stats"></div>
 
-          <!-- ④ Lernfortschritt -->
-          <div class="d-card-t" style="margin-bottom:11px">Lernfortschritt</div>
-          <div id="mast-list"></div>
-
-          <!-- ⑤ Daten -->
+          <!-- ④ Daten -->
           <div style="margin-top:26px;padding-top:18px;border-top:1px solid var(--bdr)">
             <div class="d-card-t" style="margin-bottom:10px">Daten</div>
             <div style="display:flex;gap:7px;flex-wrap:wrap">
               <button class="btn btn-o" onclick="exportBackup()">↓ Backup speichern</button>
               <button class="btn btn-o" onclick="importBackup()">↑ Backup laden</button>
             </div>
-            <div style="font-family:var(--fm);font-size:9px;color:var(--ink4);margin-top:8px;letter-spacing:.05em">Sichert Notizen, Karten, Prüfungen &amp; Fortschritt als JSON-Datei.</div>
+            <div style="font-family:var(--fm);font-size:9px;color:var(--ink4);margin-top:8px;letter-spacing:.05em">Sichert Lernzettel, Prüfungen &amp; Fortschritt als JSON-Datei.</div>
           </div>
         </div>
       </div>
@@ -1001,7 +915,7 @@ body{
       <div class="view" id="view-editor">
         <div class="det-tb">
           <button class="back-btn" onclick="goBack()">← Zurück</button>
-          <span class="breadc" id="editor-bc">Neue Notiz</span>
+          <span class="breadc" id="editor-bc">Neuer Lernzettel</span>
           <span class="spacer"></span>
           <button class="btn btn-p" onclick="saveNote()">Speichern</button>
         </div>
@@ -1024,71 +938,14 @@ body{
     <nav id="bottomnav">
       <div class="bn-inner">
         <button class="bn-item active" data-view="dashboard"><span class="bn-icon">◈</span><span>Start</span></button>
-        <button class="bn-item" data-view="struktur"><span class="bn-icon">❖</span><span>Themen</span></button>
-        <button class="bn-item" data-view="notizen"><span class="bn-icon">▣</span><span>Notizen</span></button>
-        <button class="bn-item" data-view="karten" id="bn-karten"><span class="bn-icon">◇</span><span>Karten</span></button>
+        <button class="bn-item" data-view="struktur"><span class="bn-icon">❖</span><span>Files</span></button>
+        <button class="bn-item" data-view="notizen"><span class="bn-icon">▣</span><span>Lernzettel</span></button>
         <button class="bn-item" data-view="schule"><span class="bn-icon">△</span><span>Schule</span></button>
         <button class="bn-item" data-view="stats"><span class="bn-icon">◎</span><span>Verlauf</span></button>
       </div>
     </nav>
   </div><!-- /main -->
 </div><!-- /shell -->
-
-<!-- Study fullscreen (no overlay div, just fixed) -->
-<div id="stu-ov">
-  <button class="stu-x" onclick="closeStudy()">← Beenden</button>
-  <div class="stu-ct" id="stu-ct">1 / 6</div>
-  <div class="stu-pt"><div class="stu-pf" id="stu-pf" style="width:0%"></div></div>
-  <div class="stu-card" onclick="flipCard()">
-    <div class="stu-stag" id="stu-stag">Frage</div>
-    <div class="stu-txt" id="stu-txt"></div>
-    <div class="stu-hint" id="stu-hint">Antippen zum Umdrehen</div>
-  </div>
-  <div class="stu-acts" id="stu-acts" style="display:none">
-    <button class="rbn rw" onclick="rateCard(1)">✕ Falsch</button>
-    <button class="rbn rh" onclick="rateCard(3)">≈ Schwer</button>
-    <button class="rbn rg" onclick="rateCard(4)">✓ Gut</button>
-    <button class="rbn re" onclick="rateCard(5)">★ Leicht</button>
-  </div>
-</div>
-
-<!-- Quiz fullscreen -->
-<div id="quiz-ov">
-  <button class="qx-btn" onclick="closeQuiz()">← Beenden</button>
-  <div class="q-meta"><span id="q-meta-l"></span><span id="q-score"></span></div>
-  <div class="q-pt"><div class="q-pf" id="q-pf" style="width:0%"></div></div>
-  <div class="q-card"><div class="q-subj" id="q-subj"></div><div class="q-q" id="q-q"></div></div>
-  <div class="q-opts" id="q-opts"></div>
-  <div class="q-explain" id="q-explain"></div>
-  <button class="btn btn-p" id="q-next" onclick="quizNext()" style="display:none;margin-top:10px;align-self:flex-end">Weiter →</button>
-</div>
-
-<!-- Card modal -->
-<div id="card-modal" style="display:none;position:fixed;inset:0;z-index:600;background:rgba(0,0,0,.45);align-items:center;justify-content:center;padding:16px">
-  <div style="background:var(--sur);border:1px solid var(--bdr);width:100%;max-width:480px;padding:24px 20px">
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
-      <div id="card-modal-title" style="font-family:var(--fh);font-size:18px;font-weight:900;color:var(--ink);letter-spacing:-.02em">Neue Karte</div>
-      <button onclick="hideCardModal()" style="background:none;border:none;cursor:pointer;font-family:var(--fm);font-size:11px;color:var(--ink3);padding:6px 10px;min-height:36px;letter-spacing:.05em">✕ Schließen</button>
-    </div>
-    <input type="hidden" id="cm-id">
-    <input type="hidden" id="cm-noteid">
-    <div style="margin-bottom:9px"><span class="conv-lbl">Frage (Vorderseite)</span>
-      <textarea id="cm-front" style="width:100%;padding:9px 11px;background:var(--sur);border:1px solid var(--bdr);font-family:var(--fb);font-size:13px;color:var(--ink);outline:none;resize:vertical;min-height:80px;transition:border-color var(--tr)" placeholder="Frage oder Begriff…"></textarea>
-    </div>
-    <div style="margin-bottom:9px"><span class="conv-lbl">Antwort (Rückseite)</span>
-      <textarea id="cm-back" style="width:100%;padding:9px 11px;background:var(--sur);border:1px solid var(--bdr);font-family:var(--fb);font-size:13px;color:var(--ink);outline:none;resize:vertical;min-height:80px;transition:border-color var(--tr)" placeholder="Antwort oder Erklärung…"></textarea>
-    </div>
-    <div style="margin-bottom:16px"><span class="conv-lbl">Fach</span>
-      <select id="cm-subj" style="width:100%;padding:9px 11px;background:var(--sur);border:1px solid var(--bdr);font-family:var(--fb);font-size:13px;color:var(--ink);outline:none">
-        <option>Chemie</option><option>Physik</option><option>Mathe</option>
-      </select>
-    </div>
-    <div style="display:flex;gap:8px">
-      <button class="btn btn-o" onclick="hideCardModal()" style="flex:1;justify-content:center">Abbrechen</button>
-      <button class="btn btn-p" onclick="saveCard()" style="flex:1;justify-content:center">Speichern</button>
-    </div>
-  </div>
-</div>
 
 <!-- Exam modal -->
 <div id="exam-modal" style="display:none;position:fixed;inset:0;z-index:600;background:rgba(0,0,0,.45);align-items:center;justify-content:center;padding:16px">
@@ -1139,16 +996,6 @@ const DN=[
   {id:"6",title:"Ableitungsregeln",subject:"Mathe",tags:["Analysis","Ableitung"],difficulty:"mittel",updated:"2026-04-13",content:`# Ableitungsregeln\n\n## Grundregeln\n| Funktion | Ableitung |\n|----------|-----------|\n| x^n | n·x^(n-1) |\n| sin(x) | cos(x) |\n| e^x | e^x |\n| ln(x) | 1/x |\n\n## Kettenregel\n$$[f(g(x))]' = f'(g(x)) \\cdot g'(x)$$`},
   {id:"7",title:"Konzentration",subject:"Chemie",tags:["Konzentration","mol/L"],difficulty:"leicht",updated:"2026-04-05",content:`# Konzentration\n\n$$c = n / V$$\n\n- c [mol/L], n [mol], V [L]\n\n## Verdünnung\n$$c_1 V_1 = c_2 V_2$$`},
   {id:"8",title:"Gleichförmige Bewegung",subject:"Physik",tags:["Kinematik","Geschwindigkeit"],difficulty:"leicht",updated:"2026-04-03",content:`# Gleichförmige Bewegung\n\n$$v = s / t$$\n\n$$s = v \\cdot t$$`},
-];
-const DC=[
-  {id:"f1",noteId:"1",front:"Avogadro-Konstante?",back:"N_A = 6,022 × 10²³ mol⁻¹\nAnzahl Teilchen pro Mol.",subject:"Chemie",interval:1,nextReview:new Date().toISOString()},
-  {id:"f2",noteId:"1",front:"Formel Stoffmenge n",back:"n = m / M  oder  n = N / N_A\nEinheit: mol",subject:"Chemie",interval:1,nextReview:new Date().toISOString()},
-  {id:"f3",noteId:"2",front:"2. Newtonsches Gesetz",back:"F = m · a\n[N] = [kg] · [m/s²]",subject:"Physik",interval:3,nextReview:new Date().toISOString()},
-  {id:"f4",noteId:"3",front:"abc-Formel",back:"x₁,₂ = (−b ± √(b²−4ac)) / 2a",subject:"Mathe",interval:1,nextReview:new Date().toISOString()},
-  {id:"f5",noteId:"4",front:"Säure (Brønsted-Def.)",back:"Protonendonator — gibt H⁺ ab\nBsp: HCl → H⁺ + Cl⁻",subject:"Chemie",interval:2,nextReview:new Date().toISOString()},
-  {id:"f6",noteId:"3",front:"Diskriminante D < 0 bedeutet…",back:"Keine reellen Lösungen\nD = b² − 4ac",subject:"Mathe",interval:1,nextReview:new Date().toISOString()},
-  {id:"f7",noteId:"5",front:"Elektrische Feldstärke E",back:"E = F/q = U/d\nEinheit: V/m = N/C",subject:"Physik",interval:1,nextReview:new Date().toISOString()},
-  {id:"f8",noteId:"4",front:"pH-Wert Formel",back:"pH = −log([H₃O⁺])\n[H₃O⁺] = 10^(−pH)",subject:"Chemie",interval:1,nextReview:new Date().toISOString()},
 ];
 const FORMULAS={
   Chemie:[
@@ -1216,7 +1063,6 @@ const CALC_DEFS={
 function ls(k,d){try{const v=localStorage.getItem(k);return v?JSON.parse(v):d;}catch{return d;}}
 function sv(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch{}}
 let notes    =ls('sos5-notes',DN);
-let cards    =ls('sos5-cards',DC);
 let folders  =ls('sos5-folders',[]);
 let exams    =ls('sos5-exams',[]);
 let activity =ls('sos5-act',{});
@@ -1224,10 +1070,8 @@ let streak   =ls('sos5-streak',0);
 let lastStudy=ls('sos5-lastStudy','');
 let curView  ='dashboard';
 let prevView ='dashboard';
-let fltN='Alle',fltS='Alle',fltC='Alle';
+let fltN='Alle',fltS='Alle';
 let selFile  =null;
-let deck=[],dIdx=0,dFlipped=false;
-let qDeck=[],qIdx=0,qScore=0,qAnswered=false;
 let curTheme =ls('sos5-theme','bold-light');
 let currentNote=null;
 let calMonth=(function(){const d=new Date();return new Date(d.getFullYear(),d.getMonth(),1);})();
@@ -1237,7 +1081,6 @@ let calMonth=(function(){const d=new Date();return new Date(d.getFullYear(),d.ge
 ════════════════════════════════════════════════════════════════ */
 const SC={Chemie:'c',Physik:'p',Mathe:'m'};
 function sc(s){return SC[s]||'c';}
-function dueCount(){const n=new Date();return cards.filter(c=>new Date(c.nextReview)<=n).length;}
 function fmtD(d){return new Date(d).toLocaleDateString('de-DE',{day:'2-digit',month:'short'});}
 function today(){return new Date().toISOString().slice(0,10);}
 function subjBadge(s){const c=sc(s);return`<span class="sbadge bdg${c}">${s}</span>`;}
@@ -1338,9 +1181,9 @@ function renderMD(t){
 /* ════════════════════════════════════════════════════════════════
    ROUTING — no drawer, no overlay, just show/hide views
 ════════════════════════════════════════════════════════════════ */
-const VT={dashboard:'Dashboard',struktur:'Themenbaum',notizen:'Notizen',suche:'Suche',
-  karten:'Karteikarten',schule:'Schulmodus',stats:'Fortschritt',
-  editor:'Neue Notiz',detail:'Notiz'};
+const VT={dashboard:'Dashboard',struktur:'Files',notizen:'Lernzettel',suche:'Suche',
+  schule:'Schulmodus',stats:'Fortschritt',
+  editor:'Neuer Lernzettel',detail:'Lernzettel'};
 
 function showView(id){
   prevView=curView;curView=id;
@@ -1364,7 +1207,6 @@ function showView(id){
   if(id==='struktur')renderStruktur();
   if(id==='notizen')renderNotizen();
   if(id==='suche'){renderSF();doSearch();}
-  if(id==='karten')renderKarten();
   if(id==='schule')renderSchule();
   if(id==='stats')renderStats();
   if(id==='editor')resetEditor();
@@ -1388,18 +1230,6 @@ function renderSidebar(){
     </div>`;
   });
   document.getElementById('s-subj').innerHTML=h;
-  // Due badge on nav + bottom nav
-  const due=dueCount();
-  ['nav-karten','bn-karten'].forEach(id=>{
-    const el=document.getElementById(id);if(!el)return;
-    const ex=el.querySelector('.nav-badge,.bn-badge');if(ex)ex.remove();
-    if(due>0){
-      const badge=document.createElement('span');
-      badge.className=id.startsWith('nav')?'nav-badge':'bn-badge';
-      badge.textContent=due;
-      el.appendChild(badge);
-    }
-  });
   document.getElementById('streak-num').textContent=streak;
 }
 function quickFlt(s){fltN=s;showView('notizen');}
@@ -1412,20 +1242,19 @@ function renderDash(){
   const h=now.getHours();
   document.getElementById('d-greet').textContent=h<12?'Guten Morgen':h<18?'Guten Nachmittag':'Guten Abend';
   document.getElementById('d-date').textContent=now.toLocaleDateString('de-DE',{weekday:'long',day:'numeric',month:'long'});
-  const due=dueCount();
   const subj={};notes.forEach(n=>{subj[n.subject]=(subj[n.subject]||0)+1;});
+  const now2=new Date();now2.setHours(0,0,0,0);
+  const upcoming=exams.filter(e=>new Date(e.date)>=now2).length;
   document.getElementById('stats-row').innerHTML=[
-    {v:notes.length,  l:'Notizen',      view:'notizen', tip:'Alle Notizen öffnen'},
-    {v:cards.length,  l:'Karteikarten', view:'karten',  tip:'Karteikarten öffnen'},
-    {v:due,           l:'Fällig heute', view:'karten',  tip:'Fällige Karten lernen'},
-    {v:streak+'🔥',   l:'Streak',       view:'stats',   tip:'Fortschritt anzeigen'},
+    {v:notes.length,            l:'Lernzettel', view:'notizen', tip:'Alle Lernzettel öffnen'},
+    {v:Object.keys(subj).length,l:'Fächer',     view:'struktur',tip:'Files öffnen'},
+    {v:upcoming,                l:'Prüfungen',  view:'stats',   tip:'Klausurplan anzeigen'},
+    {v:streak+'🔥',             l:'Streak',      view:'stats',   tip:'Fortschritt anzeigen'},
   ].map(s=>`<div class="stat-bl" onclick="showView('${s.view}')" style="cursor:pointer" title="${s.tip}">
     <div class="stat-n">${s.v}</div>
     <div class="stat-l">${s.l} <span style="font-family:var(--fm);font-size:8px;color:var(--acc);opacity:.6">›</span></div>
   </div>`).join('');
-  document.getElementById('due-wrap').innerHTML=due>0?`<div class="due-ban" onclick="showView('karten')">
-    <div><div class="due-t">⏰ ${due} Karteikarte${due>1?'n':''} fällig</div><div class="due-s">Jetzt lernen →</div></div>
-    <span style="opacity:.4">›</span></div>`:'';
+  document.getElementById('due-wrap').innerHTML='';
   document.getElementById('sbars').innerHTML=Object.entries(subj).map(([s,c])=>`
     <div class="bar-row" onclick="quickFlt('${s}')" style="cursor:pointer" title="Nur ${s} anzeigen">
       <div class="bar-lr">
@@ -1521,7 +1350,7 @@ function promptAddFolder(subj){
 }
 function deleteFolder(id){
   const fol=folders.find(f=>f.id===id);if(!fol)return;
-  if(!confirm(`Ordner "${fol.name}" löschen? Notizen bleiben erhalten.`))return;
+  if(!confirm(`Ordner "${fol.name}" löschen? Lernzettel bleiben erhalten.`))return;
   notes=notes.map(n=>n.folderId===id?{...n,folderId:null}:n);
   folders=folders.filter(f=>f.id!==id);
   sv('sos5-notes',notes);sv('sos5-folders',folders);
@@ -1570,7 +1399,7 @@ function renderNotizen(){
     `<button class="flt-chip ${fltN===s?'active':''}" onclick="setFN('${s}')">${s}</button>`).join('');
   const fil=fltN==='Alle'?notes:notes.filter(n=>n.subject===fltN);
   document.getElementById('notes-grid').innerHTML=fil.length===0
-    ?`<div class="empty" style="grid-column:1/-1"><div class="empty-i">▣</div><div class="empty-m">Keine Notizen</div></div>`
+    ?`<div class="empty" style="grid-column:1/-1"><div class="empty-i">▣</div><div class="empty-m">Keine Lernzettel</div></div>`
     :fil.map(n=>{const cl=sc(n.subject);return`
       <div class="nc" onclick="openNote('${n.id}')">
         <div class="nc-bar d${cl}" style="background:currentColor"></div>
@@ -1614,7 +1443,7 @@ function exportNote(){
   a.href=URL.createObjectURL(new Blob([md],{type:'text/markdown'}));
   a.download=`${n.title.toLowerCase().replace(/\s+/g,'-')}.md`;
   a.click();
-  toast('📥 Notiz exportiert','success');
+  toast('📥 Lernzettel exportiert','success');
 }
 function noteToMd(n){
   return`---\ntitle: "${n.title}"\nsubject: "${n.subject}"\ntags: [${n.tags.map(t=>`"${t}"`).join(', ')}]\ndifficulty: "${n.difficulty}"\nupdated: "${n.updated}"\n---\n\n${n.content}`;
@@ -1627,25 +1456,24 @@ function downloadNote(id){
   a.click();toast('↓ Heruntergeladen','success',2000);
 }
 function downloadAllNotes(){
-  if(!notes.length){toast('Keine Notizen vorhanden','warning');return;}
+  if(!notes.length){toast('Keine Lernzettel vorhanden','warning');return;}
   notes.forEach((n,i)=>setTimeout(()=>{
     const a=document.createElement('a');
     a.href=URL.createObjectURL(new Blob([noteToMd(n)],{type:'text/markdown'}));
     a.download=`${n.subject}-${n.title.toLowerCase().replace(/\s+/g,'-')}.md`;
     a.click();
   },i*120));
-  toast(`↓ ${notes.length} Notizen werden heruntergeladen`,'success',3000);
+  toast(`↓ ${notes.length} Lernzettel werden heruntergeladen`,'success',3000);
 }
 function editCurrentNote(){if(currentNote)editNote(currentNote.id);}
-function addCardFromNote(){if(currentNote)showAddCard(currentNote.id,currentNote.subject);}
 function editNote(id){
   const note=notes.find(n=>n.id===id);if(!note)return;
   document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
   document.getElementById('view-editor').classList.add('active');
   document.querySelectorAll('.nav-item,.bn-item').forEach(n=>n.classList.remove('active'));
   const nav=document.querySelector('.nav-item[data-view="editor"]');if(nav)nav.classList.add('active');
-  document.getElementById('tb-title').textContent='Notiz bearbeiten';
-  const bc=document.getElementById('editor-bc');if(bc)bc.textContent='Notiz bearbeiten';
+  document.getElementById('tb-title').textContent='Lernzettel bearbeiten';
+  const bc=document.getElementById('editor-bc');if(bc)bc.textContent='Lernzettel bearbeiten';
   prevView=curView;curView='editor';
   document.getElementById('meta-id').value=note.id;
   document.getElementById('meta-title').value=note.title;
@@ -1660,62 +1488,14 @@ function editNote(id){
 }
 function deleteCurrentNote(){
   if(!currentNote)return;
-  const repoHint=currentNote.repoPath?'\n\nHinweis: Diese Notiz liegt im Repo und erscheint beim nächsten Laden der Seite wieder — zum dauerhaften Löschen die Datei aus notes/ und manifest.json entfernen.':'';
-  if(!confirm(`Notiz "${currentNote.title}" löschen?${repoHint}`))return;
+  const repoHint=currentNote.repoPath?'\n\nHinweis: Dieser Lernzettel liegt im Repo und erscheint beim nächsten Laden der Seite wieder — zum dauerhaften Löschen die Datei aus notes/ und manifest.json entfernen.':'';
+  if(!confirm(`Lernzettel "${currentNote.title}" löschen?${repoHint}`))return;
   const id=currentNote.id,title=currentNote.title;
   notes=notes.filter(n=>n.id!==id);
-  cards=cards.filter(c=>c.noteId!==id);
-  sv('sos5-notes',notes);sv('sos5-cards',cards);
+  sv('sos5-notes',notes);
   currentNote=null;renderSidebar();
   toast(`✓ "${title}" gelöscht`,'success');
   showView(prevView==='detail'||prevView==='editor'?'notizen':prevView);
-}
-
-/* ════════════════════════════════════════════════════════════════
-   CARD MODAL
-════════════════════════════════════════════════════════════════ */
-function showAddCard(noteId,subj){
-  document.getElementById('card-modal-title').textContent='Neue Karte';
-  document.getElementById('cm-id').value='';
-  document.getElementById('cm-front').value='';
-  document.getElementById('cm-back').value='';
-  document.getElementById('cm-subj').value=subj||'Chemie';
-  document.getElementById('cm-noteid').value=noteId||'';
-  document.getElementById('card-modal').style.display='flex';
-}
-function showEditCard(id){
-  const card=cards.find(c=>c.id===id);if(!card)return;
-  document.getElementById('card-modal-title').textContent='Karte bearbeiten';
-  document.getElementById('cm-id').value=card.id;
-  document.getElementById('cm-front').value=card.front;
-  document.getElementById('cm-back').value=card.back;
-  document.getElementById('cm-subj').value=card.subject;
-  document.getElementById('cm-noteid').value=card.noteId||'';
-  document.getElementById('card-modal').style.display='flex';
-}
-function hideCardModal(){document.getElementById('card-modal').style.display='none';}
-function saveCard(){
-  const front=(document.getElementById('cm-front').value||'').trim();
-  const back=(document.getElementById('cm-back').value||'').trim();
-  if(!front||!back){toast('Bitte Frage und Antwort eingeben','warning');return;}
-  const subj=document.getElementById('cm-subj').value;
-  const noteId=document.getElementById('cm-noteid').value;
-  const existId=document.getElementById('cm-id').value;
-  if(existId){
-    cards=cards.map(c=>c.id===existId?{...c,front,back,subject:subj}:c);
-    sv('sos5-cards',cards);toast('✓ Karte aktualisiert','success');
-  } else {
-    cards=[...cards,{id:Date.now().toString(),noteId,front,back,subject:subj,interval:1,nextReview:new Date().toISOString()}];
-    sv('sos5-cards',cards);toast('✓ Karte erstellt','success');recordAct(1);
-  }
-  hideCardModal();renderKarten();renderSidebar();
-}
-function deleteCard(id){
-  const card=cards.find(c=>c.id===id);if(!card)return;
-  if(!confirm(`Karte löschen: "${card.front.slice(0,50)}"?`))return;
-  cards=cards.filter(c=>c.id!==id);
-  sv('sos5-cards',cards);renderKarten();renderSidebar();
-  toast('✓ Karte gelöscht','success');
 }
 
 /* ════════════════════════════════════════════════════════════════
@@ -1734,14 +1514,8 @@ function doSearch(){
     if(!q)return true;
     return n.title.toLowerCase().includes(q)||n.content.toLowerCase().includes(q)||n.tags.some(t=>t.toLowerCase().includes(q));
   });
-  // Karteikarten nur bei aktiver Sucheingabe durchsuchen
-  const cfil=q?cards.filter(c=>{
-    if(fltS!=='Alle'&&c.subject!==fltS)return false;
-    return c.front.toLowerCase().includes(q)||c.back.toLowerCase().includes(q);
-  }):[];
-  const total=fil.length+cfil.length;
-  document.getElementById('r-cnt').textContent=
-    `${total} Ergebnis${total!==1?'se':''}`+(cfil.length?` — ${fil.length} Notizen, ${cfil.length} Karten`:'');
+  const total=fil.length;
+  document.getElementById('r-cnt').textContent=`${total} Ergebnis${total!==1?'se':''}`;
   function snip(text,term){
     if(!term)return text.replace(/[#*$`|]/g,'').slice(0,100)+'…';
     const cl=text.replace(/[#*$`|]/g,'');
@@ -1761,196 +1535,8 @@ function doSearch(){
       <div class="sr-sn">${snip(n.content,q)}</div>
       <div class="sr-meta">${subjBadge(n.subject)} ${diffLbl(n.difficulty)} ${n.tags.slice(0,3).map(t=>`<span class="tag">#${t}</span>`).join('')}</div>
     </div>`).join('');
-  if(cfil.length){
-    h+=`<div class="r-cnt" style="margin:16px 0 11px">Karteikarten</div>`;
-    h+=cfil.map(c=>`<div class="sr" onclick="showEditCard('${c.id}')">
-      <div class="sr-t">◇ ${hl(c.front,q)}</div>
-      <div class="sr-sn">${hl(c.back,q)}</div>
-      <div class="sr-meta">${subjBadge(c.subject)} <span class="tag">Karteikarte</span></div>
-    </div>`).join('');
-  }
   document.getElementById('s-res').innerHTML=h||`<div class="empty"><div class="empty-i">○</div><div class="empty-m">Keine Ergebnisse${q?` für "${q}"`:''}</div></div>`;
 }
-
-/* ════════════════════════════════════════════════════════════════
-   KARTEIKARTEN
-════════════════════════════════════════════════════════════════ */
-function renderKarten(){
-  const now=new Date();
-  const due=cards.filter(c=>new Date(c.nextReview)<=now);
-  const btn=document.getElementById('btn-due');
-  if(due.length>0){btn.textContent=`⏰ ${due.length} fällig`;btn.style.display='';}
-  else btn.style.display='none';
-  const subs=['Alle',...new Set(cards.map(c=>c.subject))];
-  document.getElementById('k-flt').innerHTML=subs.map(s=>
-    `<button class="flt-chip ${fltC===s?'active':''}" onclick="setFC('${s}')">${s}</button>`).join('');
-  const fil=fltC==='Alle'?cards:cards.filter(c=>c.subject===fltC);
-  document.getElementById('fc-grid').innerHTML=fil.map(card=>{
-    const isDue=new Date(card.nextReview)<=now;const cl=sc(card.subject);
-    const isLeech=(card.lapses||0)>=4;
-    return`<div class="fc-card ${isDue?'due':''}">
-      ${isDue?'<span class="fc-due-b">Fällig</span>':isLeech?'<span class="fc-due-b" style="background:#b45309">⚠ Schwierig</span>':''}
-      <div class="fc-subj c${cl}">${card.subject}</div>
-      <div class="fc-q">${card.front}</div>
-      <div class="fc-m">Interval: ${card.interval} Tag${card.interval!==1?'e':''}</div>
-      <div style="display:flex;gap:3px;margin-top:9px">
-        <button onclick="showEditCard('${card.id}')" style="flex:1;padding:4px 6px;border:1px solid var(--bdr);background:none;font-family:var(--fm);font-size:9px;color:var(--ink3);cursor:pointer;letter-spacing:.06em;transition:all var(--tr)" onmouseover="this.style.borderColor='var(--acc)';this.style.color='var(--acc)'" onmouseout="this.style.borderColor='var(--bdr)';this.style.color='var(--ink3)'">✎ Edit</button>
-        <button onclick="deleteCard('${card.id}')" style="flex:1;padding:4px 6px;border:1px solid var(--bdr);background:none;font-family:var(--fm);font-size:9px;color:var(--ink3);cursor:pointer;letter-spacing:.06em;transition:all var(--tr)" onmouseover="this.style.borderColor='#dc2626';this.style.color='#dc2626'" onmouseout="this.style.borderColor='var(--bdr)';this.style.color='var(--ink3)'">✕ Del</button>
-      </div>
-    </div>`;}).join('');
-}
-function setFC(s){fltC=s;renderKarten();}
-
-function startStudy(dueOnly){
-  const now=new Date();
-  const pool=dueOnly?cards.filter(c=>new Date(c.nextReview)<=now):(fltC==='Alle'?[...cards]:cards.filter(c=>c.subject===fltC));
-  if(!pool.length){toast('Keine Karten vorhanden','warning');return;}
-  deck=pool;dIdx=0;dFlipped=false;
-  showStudyCard();
-  document.getElementById('stu-ov').classList.add('on');
-  recordAct(1);
-}
-function showStudyCard(){
-  if(dIdx>=deck.length){
-    document.getElementById('stu-ov').innerHTML=`
-      <button class="stu-x" onclick="closeStudy()">← Beenden</button>
-      <div style="text-align:center">
-        <div style="font-family:var(--fh);font-size:clamp(40px,8vw,60px);font-weight:900;color:var(--acc);letter-spacing:-.04em;margin-bottom:10px">DONE.</div>
-        <div style="font-family:var(--fm);font-size:10px;color:var(--ink3);letter-spacing:.14em;text-transform:uppercase;margin-bottom:20px">Alle ${deck.length} Karten gelernt 🎉</div>
-        <button class="btn btn-p" onclick="closeStudy()">Fertig</button>
-      </div>`;
-    toast('🏆 Lernrunde abgeschlossen!','success');return;
-  }
-  const card=deck[dIdx];dFlipped=false;
-  document.getElementById('stu-ct').textContent=`${dIdx+1} / ${deck.length}`;
-  document.getElementById('stu-pf').style.width=`${(dIdx/deck.length*100).toFixed(0)}%`;
-  document.getElementById('stu-txt').textContent=card.front;
-  document.getElementById('stu-stag').textContent='Frage';
-  document.getElementById('stu-hint').style.display='';
-  document.getElementById('stu-acts').style.display='none';
-}
-function flipCard(){
-  if(dFlipped)return;dFlipped=true;
-  document.getElementById('stu-txt').textContent=deck[dIdx].back;
-  document.getElementById('stu-stag').textContent='Antwort';
-  document.getElementById('stu-hint').style.display='none';
-  document.getElementById('stu-acts').style.display='grid';
-}
-/* SM-2: q ∈ {1 Falsch, 3 Schwer, 4 Gut, 5 Leicht} */
-function rateCard(q){
-  const card={...deck[dIdx]};
-  let ef=card.ef||2.5, reps=card.reps||0, interval=card.interval||1, lapses=card.lapses||0;
-  if(q<3){
-    reps=0;interval=1;lapses++;
-  } else {
-    ef=Math.max(1.3, ef+(0.1-(5-q)*(0.08+(5-q)*0.02)));
-    reps++;
-    interval=reps===1?1:reps===2?6:Math.round(interval*ef);
-  }
-  cards=cards.map(c=>c.id===card.id?{...c,ef,reps,interval,lapses,nextReview:new Date(Date.now()+interval*86400000).toISOString()}:c);
-  sv('sos5-cards',cards);dIdx++;showStudyCard();
-}
-function closeStudy(){
-  const ov=document.getElementById('stu-ov');
-  ov.classList.remove('on');
-  ov.innerHTML=`<button class="stu-x" onclick="closeStudy()">← Beenden</button>
-  <div class="stu-ct" id="stu-ct">1 / 6</div>
-  <div class="stu-pt"><div class="stu-pf" id="stu-pf" style="width:0%"></div></div>
-  <div class="stu-card" onclick="flipCard()">
-    <div class="stu-stag" id="stu-stag">Frage</div>
-    <div class="stu-txt" id="stu-txt"></div>
-    <div class="stu-hint" id="stu-hint">Antippen zum Umdrehen</div>
-  </div>
-  <div class="stu-acts" id="stu-acts" style="display:none">
-    <button class="rbn rw" onclick="rateCard(1)">✕ Falsch</button>
-    <button class="rbn rh" onclick="rateCard(3)">≈ Schwer</button>
-    <button class="rbn rg" onclick="rateCard(4)">✓ Gut</button>
-    <button class="rbn re" onclick="rateCard(5)">★ Leicht</button>
-  </div>`;
-  renderKarten();renderSidebar();
-}
-
-/* ════════════════════════════════════════════════════════════════
-   QUIZ
-════════════════════════════════════════════════════════════════ */
-function buildQuizDeck(){
-  const pool=[...cards].sort(()=>Math.random()-.5).slice(0,Math.min(10,cards.length));
-  return pool.map(card=>{
-    // Falsche Antworten bevorzugt aus demselben Fach — plausiblere Distraktoren
-    const same=cards.filter(c=>c.id!==card.id&&c.subject===card.subject).sort(()=>Math.random()-.5);
-    const other=cards.filter(c=>c.id!==card.id&&c.subject!==card.subject).sort(()=>Math.random()-.5);
-    const wrong=[...same,...other].slice(0,3);
-    const opts=[card.back,...wrong.map(c=>c.back)].sort(()=>Math.random()-.5);
-    return{q:card.front,correct:card.back,opts,subject:card.subject};
-  });
-}
-function startQuiz(){
-  qDeck=buildQuizDeck();
-  if(!qDeck.length){toast('Keine Karten für Quiz','warning');return;}
-  qIdx=0;qScore=0;qAnswered=false;
-  document.getElementById('quiz-ov').classList.add('on');
-  showQuizQ();recordAct(1);
-}
-function showQuizQ(){
-  if(qIdx>=qDeck.length){
-    const pct=Math.round((qScore/qDeck.length)*100);
-    document.getElementById('quiz-ov').innerHTML=`
-      <div style="text-align:center">
-        <div style="font-family:var(--fm);font-size:9px;text-transform:uppercase;letter-spacing:.18em;color:var(--ink4);margin-bottom:10px">Quiz abgeschlossen</div>
-        <div style="font-family:var(--fh);font-size:clamp(52px,10vw,80px);font-weight:900;color:var(--acc);letter-spacing:-.04em;line-height:1">${pct}%</div>
-        <div style="font-family:var(--fm);font-size:11px;color:var(--ink3);margin-top:7px;letter-spacing:.09em">${qScore} / ${qDeck.length} richtig</div>
-        <div style="margin-top:20px;display:flex;gap:8px;justify-content:center;flex-wrap:wrap">
-          <button class="btn btn-o" onclick="closeQuiz()">Fertig</button>
-          <button class="btn btn-p" onclick="startQuiz()">Nochmal →</button>
-        </div>
-      </div>`;
-    if(pct>=80)toast(`🏆 ${pct}% — Hervorragend!`,'success');
-    else if(pct>=60)toast(`👍 ${pct}% — Gut gemacht`,'');
-    else toast(`📚 ${pct}% — Weiter üben`,'warning');
-    return;
-  }
-  const q=qDeck[qIdx];qAnswered=false;
-  document.getElementById('q-meta-l').textContent=`${qIdx+1} / ${qDeck.length}`;
-  document.getElementById('q-score').textContent=`✓ ${qScore}`;
-  document.getElementById('q-pf').style.width=`${(qIdx/qDeck.length*100).toFixed(0)}%`;
-  document.getElementById('q-subj').textContent=q.subject;
-  document.getElementById('q-q').textContent=q.q;
-  document.getElementById('q-explain').style.display='none';
-  document.getElementById('q-next').style.display='none';
-  const letters=['A','B','C','D'];
-  document.getElementById('q-opts').innerHTML=q.opts.map((opt,i)=>
-    `<button class="q-opt" onclick="answerQuiz(this,'${opt.replace(/'/g,"\\'").replace(/"/g,'&quot;')}')">
-      <span class="q-letter">${letters[i]}</span><span>${opt.length>100?opt.slice(0,97)+'…':opt}</span>
-    </button>`).join('');
-}
-function answerQuiz(el,answer){
-  if(qAnswered)return;qAnswered=true;
-  const q=qDeck[qIdx];
-  const isCorrect=answer===q.correct;
-  if(isCorrect){qScore++;el.classList.add('correct');}
-  else{
-    el.classList.add('wrong');
-    document.querySelectorAll('.q-opt').forEach(b=>{
-      if(b.querySelector('span:last-child')?.textContent===q.correct)b.classList.add('correct');
-    });
-  }
-  document.getElementById('q-explain').textContent=`Richtige Antwort: ${q.correct}`;
-  document.getElementById('q-explain').style.display='block';
-  document.getElementById('q-next').style.display='flex';
-}
-function quizNext(){qIdx++;showQuizQ();}
-function closeQuiz(){
-  const ov=document.getElementById('quiz-ov');
-  ov.classList.remove('on');
-  ov.innerHTML=`<button class="qx-btn" onclick="closeQuiz()">← Beenden</button>
-  <div class="q-meta"><span id="q-meta-l"></span><span id="q-score"></span></div>
-  <div class="q-pt"><div class="q-pf" id="q-pf" style="width:0%"></div></div>
-  <div class="q-card"><div class="q-subj" id="q-subj"></div><div class="q-q" id="q-q"></div></div>
-  <div class="q-opts" id="q-opts"></div>
-  <div class="q-explain" id="q-explain"></div>
-  <button class="btn btn-p" id="q-next" onclick="quizNext()" style="display:none;margin-top:10px;align-self:flex-end">Weiter →</button>`;
-}
-
 
 /* ════════════════════════════════════════════════════════════════
    SCHULMODUS
@@ -2103,22 +1689,8 @@ function renderStats(){
     {n:total,l:'Lerneinheiten'},
     {n:activeDays,l:'Aktive Tage'},
     {n:streak+'🔥',l:'Streak'},
-    {n:cards.length,l:'Karteikarten'},
-    {n:notes.length,l:'Notizen'},
+    {n:notes.length,l:'Lernzettel'},
   ].map(s=>`<div class="bstat"><div class="bstat-n">${s.n}</div><div class="bstat-l">${s.l}</div></div>`).join('');
-  const mList=notes.map(note=>{
-    const nc=cards.filter(c=>c.noteId===note.id);
-    if(!nc.length)return null;
-    const avg=nc.reduce((a,c)=>a+c.interval,0)/nc.length;
-    return{title:note.title,subject:note.subject,mastery:Math.min(100,Math.round((avg/14)*100))};
-  }).filter(Boolean).sort((a,b)=>b.mastery-a.mastery);
-  document.getElementById('mast-list').innerHTML=mList.length===0
-    ?'<div class="empty"><div class="empty-m">Lerne Karteikarten um Fortschritt zu sehen</div></div>'
-    :mList.map(n=>`<div class="mast-row">
-      <div class="mast-t">${n.title} <span class="sbadge bdg${sc(n.subject)}" style="font-size:7.5px">${n.subject}</span></div>
-      <div class="mast-bar"><div class="mast-f" style="width:${n.mastery}%"></div></div>
-      <div class="mast-p">${n.mastery}%</div>
-    </div>`).join('');
 }
 
 /* ════════════════════════════════════════════════════════════════
@@ -2145,7 +1717,7 @@ function renderKlausurPlaner(){
     const attached=noteIds.map(id=>notes.find(n=>n.id===id)).filter(Boolean);
     const chipsHtml=attached.map(n=>
       `<div class="kp-chip">
-        <span class="kp-chip-lbl" onclick="openNote('${n.id}')" title="Notiz öffnen">${n.title}</span>
+        <span class="kp-chip-lbl" onclick="openNote('${n.id}')" title="Lernzettel öffnen">${n.title}</span>
         <button class="kp-chip-del" onclick="detachNote('${e.id}','${n.id}')" title="Entfernen">✕</button>
       </div>`).join('');
 
@@ -2153,7 +1725,7 @@ function renderKlausurPlaner(){
     const unattached=notes.filter(n=>!noteIds.includes(n.id));
     const sameS=unattached.filter(n=>n.subject===e.subject);
     const otherS=unattached.filter(n=>n.subject!==e.subject);
-    let pickerOpts='<option value="">+ Notiz anheften…</option>';
+    let pickerOpts='<option value="">+ Lernzettel anheften…</option>';
     if(sameS.length){pickerOpts+=`<optgroup label="${e.subject}">`;sameS.forEach(n=>{pickerOpts+=`<option value="${n.id}">${n.title}</option>`;});pickerOpts+='</optgroup>';}
     if(otherS.length){pickerOpts+='<optgroup label="Andere">';otherS.forEach(n=>{pickerOpts+=`<option value="${n.id}">${n.title} (${n.subject})</option>`;});pickerOpts+='</optgroup>';}
 
@@ -2177,7 +1749,7 @@ function attachNote(examId,noteId){
   if(!noteId)return;
   exams=exams.map(e=>e.id===examId?{...e,noteIds:[...(e.noteIds||[]),noteId]}:e);
   sv('sos5-exams',exams);renderKlausurPlaner();
-  toast('📎 Notiz angeheftet','success',1800);
+  toast('📎 Lernzettel angeheftet','success',1800);
 }
 function detachNote(examId,noteId){
   exams=exams.map(e=>e.id===examId?{...e,noteIds:(e.noteIds||[]).filter(id=>id!==noteId)}:e);
@@ -2227,7 +1799,7 @@ function syncKlausurNote(){
   if(kpNote){
     notes=notes.map(n=>n.id===kpNoteId?{...n,content:md,updated:today()}:n);
     sv('sos5-notes',notes);
-    toast('✓ Klausurplan-Notiz aktualisiert','success');
+    toast('✓ Klausurplan-Lernzettel aktualisiert','success');
   } else {
     const newNote={id:Date.now().toString(),title:'Klausurplan',subject:kpFolder.subject,
       tags:['klausurplan','Prüfungen'],difficulty:'mittel',updated:today(),
@@ -2235,7 +1807,7 @@ function syncKlausurNote(){
     notes=[...notes,newNote];
     sv('sos5-notes',notes);
     sv('sos5-kp-id',newNote.id);
-    toast('✓ Klausurplan als Notiz gespeichert','success');
+    toast('✓ Klausurplan als Lernzettel gespeichert','success');
   }
   renderSidebar();updateFolderPicker();
   if(curView==='struktur')renderStruktur();
@@ -2257,7 +1829,7 @@ function resetEditor(){
   document.getElementById('meta-subj').value='Chemie';
   document.getElementById('meta-diff').value='mittel';
   document.getElementById('meta-tags').value='';
-  const bc=document.getElementById('editor-bc');if(bc)bc.textContent='Neue Notiz';
+  const bc=document.getElementById('editor-bc');if(bc)bc.textContent='Neuer Lernzettel';
   updateFolderPicker();
   const def=`# Titel\n\n## Definition\n\n\n## Formeln\n\n\n## Beispiel\n\n\n## Häufige Fehler\n`;
   document.getElementById('editor-ta').value=def;
@@ -2372,7 +1944,7 @@ function dropInFolder(ev,folderId){
   const folder=folders.find(f=>f.id===folderId);
   cleanDragOver();
   if(!note||!folder)return;
-  if(note.subject!==folder.subject){toast('Notiz und Ordner haben unterschiedliche Fächer','warning');return;}
+  if(note.subject!==folder.subject){toast('Lernzettel und Ordner haben unterschiedliche Fächer','warning');return;}
   if(note.folderId===folderId)return;
   notes=notes.map(n=>n.id===noteId?{...n,folderId}:n);
   sv('sos5-notes',notes);renderStruktur();
@@ -2466,10 +2038,10 @@ document.getElementById('md-drop-overlay').addEventListener('drop',function(e){
 ════════════════════════════════════════════════════════════════ */
 function exportBackup(){
   const data={version:1,exported:new Date().toISOString(),
-    notes,cards,folders,exams,activity,streak,lastStudy};
+    notes,folders,exams,activity,streak,lastStudy};
   const a=document.createElement('a');
   a.href=URL.createObjectURL(new Blob([JSON.stringify(data,null,2)],{type:'application/json'}));
-  a.download=`studyos-backup-${today()}.json`;
+  a.download=`fakestuff-backup-${today()}.json`;
   a.click();
   toast('💾 Backup heruntergeladen','success');
 }
@@ -2479,16 +2051,16 @@ function handleBackupFile(file){
   reader.onload=function(e){
     let d;
     try{d=JSON.parse(e.target.result);}catch{toast('Ungültige Backup-Datei','warning');return;}
-    if(!d||!Array.isArray(d.notes)||!Array.isArray(d.cards)){toast('Ungültige Backup-Datei','warning');return;}
+    if(!d||!Array.isArray(d.notes)){toast('Ungültige Backup-Datei','warning');return;}
     const when=d.exported?new Date(d.exported).toLocaleDateString('de-DE'):'unbekannt';
-    if(!confirm(`Backup vom ${when} laden?\n${d.notes.length} Notizen, ${d.cards.length} Karten — ersetzt die aktuellen Daten.`))return;
-    notes=d.notes;cards=d.cards;
+    if(!confirm(`Backup vom ${when} laden?\n${d.notes.length} Lernzettel — ersetzt die aktuellen Daten.`))return;
+    notes=d.notes;
     folders=Array.isArray(d.folders)?d.folders:[];
     exams=Array.isArray(d.exams)?d.exams:[];
     activity=d.activity&&typeof d.activity==='object'?d.activity:{};
     streak=typeof d.streak==='number'?d.streak:0;
     lastStudy=d.lastStudy||'';
-    sv('sos5-notes',notes);sv('sos5-cards',cards);sv('sos5-folders',folders);
+    sv('sos5-notes',notes);sv('sos5-folders',folders);
     sv('sos5-exams',exams);sv('sos5-act',activity);sv('sos5-streak',streak);sv('sos5-lastStudy',lastStudy);
     renderSidebar();showView('dashboard');
     toast('✓ Backup wiederhergestellt','success');
@@ -2566,15 +2138,13 @@ document.addEventListener('keydown',e=>{
   const tag=document.activeElement.tagName;
   if(['INPUT','TEXTAREA','SELECT'].includes(tag))return;
   const k=e.key.toUpperCase();
-  if(e.key==='Escape'){closeStudy();closeQuiz();hideCardModal();hideExamModal();return;}
+  if(e.key==='Escape'){hideExamModal();return;}
   if((e.metaKey||e.ctrlKey)&&k==='K'){e.preventDefault();showView('suche');document.getElementById('search-input').focus();return;}
   if((e.metaKey||e.ctrlKey)&&k==='N'){e.preventDefault();showView('editor');return;}
-  if(k==='Q'){startQuiz();return;}
   const now=Date.now();
   if(now-lastKeyT<700&&lastKey==='G'){
     if(k==='D')showView('dashboard');
     if(k==='N')showView('notizen');
-    if(k==='K')showView('karten');
     if(k==='S')showView('stats');
     lastKey='';return;
   }
