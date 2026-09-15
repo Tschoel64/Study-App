@@ -367,6 +367,7 @@ body{
 [data-theme="bold-dark"] .md-render .fbl{background:#0a0a0a;color:#00cc77;}
 [data-theme="cyber"] .md-render .fbl{border:1px solid rgba(0,255,136,.3);}
 .md-render blockquote{border-left:2px solid var(--acc);padding:8px 13px;margin:9px 0;font-size:12.5px;color:var(--ink3);background:var(--muted);}
+.md-render img{display:block;max-width:100%;height:auto;margin:14px 0;border:1px solid var(--bdr);background:#fff;}
 .md-render .katex-display{margin:12px 0;padding:6px 0;overflow-x:auto;overflow-y:hidden;}
 .md-render .katex{font-size:1.05em;}
 .md-render ul,.md-render ol{padding-left:18px;margin:7px 0;}
@@ -988,14 +989,8 @@ body{
    DATA
 ════════════════════════════════════════════════════════════════ */
 const DN=[
-  {id:"1",title:"Stoffmenge & Mol",subject:"Chemie",tags:["mol","Einheiten","Rechnen"],difficulty:"mittel",updated:"2026-04-10",content:`# Stoffmenge & Mol\n\n## Definition\nDie **Stoffmenge** $n$ gibt an, wie viele Teilchen in einer Probe enthalten sind.\n\n$$n = N / N_A$$\n\n- $N$ = Anzahl der Teilchen\n- $N_A$ = Avogadro-Konstante = $6.022 × 10^{23} mol^{-1}$\n\n## Molare Masse\n$$M = m / n \\quad [g/mol]$$\n\n## Beispiel\n> 18 g Wasser (H₂O, M = 18 g/mol)\n>\n> n = 18 / 18 = 1 mol\n\n## Formelsammlung\n| Größe | Formel | Einheit |\n|-------|--------|---------|\n| Stoffmenge | n = m/M | mol |\n| Masse | m = n·M | g |\n| Molare Masse | M = m/n | g/mol |\n\n## Häufige Fehler\n- M und m verwechseln\n- Einheit vergessen`},
-  {id:"2",title:"Newtonsche Gesetze",subject:"Physik",tags:["Kraft","Bewegung","Newton"],difficulty:"leicht",updated:"2026-04-12",content:`# Newtonsche Gesetze\n\n## 1. Trägheitsgesetz\nKörper bleibt in Ruhe, solange keine Kraft wirkt.\n\n## 2. Aktionsprinzip\n$$F = m · a$$\n\n- F [N], m [kg], a [m/s²]\n\n## 3. Reaktionsprinzip\nActio = Reactio\n\n## Beispiel\n> m = 1000 kg, a = 3 m/s²\n>\n> F = 3000 N`},
   {id:"3",title:"Quadratische Gleichungen",subject:"Mathe",tags:["Algebra","abc-Formel"],difficulty:"mittel",updated:"2026-04-14",content:`# Quadratische Gleichungen\n\n## Allgemeine Form\n$$ax^2 + bx + c = 0$$\n\n## abc-Formel\n$$x = (-b \\pm \\sqrt{b^2-4ac}) / 2a$$\n\n## Diskriminante\n$$D = b^2 - 4ac$$\n\n| D | Lösungen |\n|---|----------|\n| D > 0 | 2 Lösungen |\n| D = 0 | 1 Lösung |\n| D < 0 | keine |\n\n## Beispiel\n> x² - 5x + 6 = 0 → x₁ = 3, x₂ = 2`},
-  {id:"4",title:"Säuren und Basen",subject:"Chemie",tags:["pH-Wert","Protonentheorie"],difficulty:"schwer",updated:"2026-04-08",content:`# Säuren und Basen\n\n## Brønsted-Definition\n- **Säure**: Protonendonator — gibt H⁺ ab\n- **Base**: Protonenakzeptor — nimmt H⁺ auf\n\n## pH-Wert\n$$pH = -\\log([H_3O^+])$$\n\n## Titration\n$$c_S \\cdot V_S = c_B \\cdot V_B$$`},
-  {id:"5",title:"Elektrisches Feld",subject:"Physik",tags:["Elektrizität","Feldlinien"],difficulty:"schwer",updated:"2026-04-11",content:`# Elektrisches Feld\n\n## Feldstärke\n$$E = F/q = U/d$$\n\n## Kondensatorenergie\n$$W = \\frac{1}{2} C U^2$$\n\n## Kapazität\n$$C = \\varepsilon_0 \\varepsilon_r A/d$$`},
   {id:"6",title:"Ableitungsregeln",subject:"Mathe",tags:["Analysis","Ableitung"],difficulty:"mittel",updated:"2026-04-13",content:`# Ableitungsregeln\n\n## Grundregeln\n| Funktion | Ableitung |\n|----------|-----------|\n| x^n | n·x^(n-1) |\n| sin(x) | cos(x) |\n| e^x | e^x |\n| ln(x) | 1/x |\n\n## Kettenregel\n$$[f(g(x))]' = f'(g(x)) \\cdot g'(x)$$`},
-  {id:"7",title:"Konzentration",subject:"Chemie",tags:["Konzentration","mol/L"],difficulty:"leicht",updated:"2026-04-05",content:`# Konzentration\n\n$$c = n / V$$\n\n- c [mol/L], n [mol], V [L]\n\n## Verdünnung\n$$c_1 V_1 = c_2 V_2$$`},
-  {id:"8",title:"Gleichförmige Bewegung",subject:"Physik",tags:["Kinematik","Geschwindigkeit"],difficulty:"leicht",updated:"2026-04-03",content:`# Gleichförmige Bewegung\n\n$$v = s / t$$\n\n$$s = v \\cdot t$$`},
 ];
 const FORMULAS={
   Chemie:[
@@ -1140,6 +1135,7 @@ function renderMD(t){
   let s=t.replace(/\$\$([\s\S]+?)\$\$/g,(_,f)=>{math.push({tex:f.trim(),disp:true});return`§§K${math.length-1}§§`;});
   s=s.replace(/\$([^$\n]+?)\$/g,(_,f)=>{math.push({tex:f.trim(),disp:false});return`§§K${math.length-1}§§`;});
   s=s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  s=s.replace(/!\[([^\]]*)\]\(([^)]+)\)/g,'<img src="$2" alt="$1" loading="lazy">');
   s=s.replace(/^### (.+)$/gm,'<h3>$1</h3>');
   s=s.replace(/^## (.+)$/gm,'<h2>$1</h2>');
   s=s.replace(/^# (.+)$/gm,'<h1>$1</h1>');
@@ -1170,7 +1166,7 @@ function renderMD(t){
     if(!tr){if(inP){out.push('</p>');inP=false;}continue;}
     const mOnly=tr.match(/^§§K(\d+)§§$/);
     if(mOnly&&math[+mOnly[1]]&&math[+mOnly[1]].disp){if(inP){out.push('</p>');inP=false;}out.push(tr);continue;}
-    if(/^<(h[1-4]|ul|ol|table|div|blockquote)/.test(tr)){if(inP){out.push('</p>');inP=false;}out.push(tr);continue;}
+    if(/^<(h[1-4]|ul|ol|table|div|blockquote|img)/.test(tr)){if(inP){out.push('</p>');inP=false;}out.push(tr);continue;}
     if(!inP){out.push('<p>');inP=true;}
     out.push(tr);
   }
@@ -2085,6 +2081,10 @@ async function syncRepoNotes(){
   }catch{return;} // offline o.ä. — App läuft normal weiter
   if(!files.length)return;
   let added=0,updated=0;
+  // Repo-Notizen, die nicht mehr im Manifest stehen, wurden im Repo gelöscht — lokal ebenfalls entfernen
+  const before=notes.length;
+  notes=notes.filter(n=>!n.repoPath||files.includes(n.repoPath));
+  const removed=before-notes.length;
   await Promise.all(files.map(async path=>{
     try{
       const r=await fetch('notes/'+encodeURI(path),{cache:'no-store'});
@@ -2107,11 +2107,11 @@ async function syncRepoNotes(){
       }
     }catch{}
   }));
-  if(added||updated){
+  if(added||updated||removed){
     sv('sos5-notes',notes);
     renderSidebar();
     if(['dashboard','notizen','struktur','suche'].includes(curView))showView(curView);
-    toast(`⟳ Mit Repo abgeglichen: ${added} neu, ${updated} aktualisiert`,'success');
+    toast(`⟳ Mit Repo abgeglichen: ${added} neu, ${updated} aktualisiert${removed?`, ${removed} entfernt`:''}`,'success');
   }
 }
 
